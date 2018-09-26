@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>handler</artifactId>
+    <packaging>jar</packaging>
+
+    <name>handler</name>
+    <description>Urban handler project use to work on a specific city, read their data and normalize and insert into our own data center.</description>
+
+    <parent>
+        <groupId>ca.ghandalf.urban.mobility</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.9</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>ca.ghandalf.urban.mobility</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+<!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>                       
+                        <manifestEntries>
+                            <Automatic-Module-Name>ca.ghandalf.urban.mobility.handler</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>-->
+        </plugins>
+    </build>
+
+</project>

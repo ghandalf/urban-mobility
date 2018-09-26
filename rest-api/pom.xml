@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>rest-api</artifactId>
+    <packaging>war</packaging>
+
+    <name>rest-api</name>
+    <description>Urban service project Web Service API exposure.</description>
+
+    <parent>
+        <groupId>ca.ghandalf.urban.mobility</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.9</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>ca.ghandalf.urban.mobility</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ca.ghandalf.urban.mobility</groupId>
+            <artifactId>handler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ca.ghandalf.urban.mobility</groupId>
+            <artifactId>repository</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ca.ghandalf.urban.mobility</groupId>
+            <artifactId>service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>            
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency> 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+            
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ca.ghandalf.urban.mobility.ws.server.RestApiApplication</mainClass>
+                    <layout>WAR</layout>
+                    <release>10</release>
+                </configuration>
+            </plugin>
+<!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>                       
+                        <manifestEntries>
+                            <Automatic-Module-Name>ca.ghandalf.urban.mobility.restapi</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>           
+            </plugin>-->
+        </plugins>
+    </build>
+
+
+</project>
