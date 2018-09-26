@@ -82,23 +82,7 @@
                     <release>10</release>
                 </configuration>
             </plugin>
-<!--            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <index>true</index>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>                       
-                        <manifestEntries>
-                            <Automatic-Module-Name>ca.ghandalf.urban.mobility.restapi</Automatic-Module-Name>
-                        </manifestEntries>
-                    </archive>
-                </configuration>           
-            </plugin>-->
         </plugins>
     </build>
-
 
 </project>
