@@ -6,6 +6,7 @@
 package ca.ghandalf.urban.mobility.service.ng;
 
 import ca.ghandalf.urban.mobility.domain.ng.Book;
+import ca.ghandalf.urban.mobility.service.ng.exception.BookException;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface BookService {
     
     public Book create(Book book);
     
-    public Book read(Long id);
+    public Book read(Long id) throws BookException;
     
     public Book update(Book book);
     

@@ -9,6 +9,7 @@ module ca.ghandalf.urban.mobility.repository {
 //    requires ucp;
     requires spring.data.jpa;
     requires spring.context;
+    requires postgresql;
     
     exports ca.ghandalf.urban.mobility.repository;
     exports ca.ghandalf.urban.mobility.repository.ng;
