@@ -30,7 +30,7 @@ public class ShoppingController {
     @Autowired
     private ShoppingService service;
     
-    @RequestMapping("/root.shopping")
+    @RequestMapping(method=RequestMethod.GET, value = "/root", produces = { "application/JSON" })
     public String root() {
         return "Welcome to Shopping Rest Controller.";
     }
