@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true">
+
+    <property name="FILE_NAME_APP" value="api" />
+    <property name="FILE_NAME_MAIN" value="${FILE_NAME_APP}.main" />
+    <property name="FILE_NAME_HIBERNATE" value="${FILE_NAME_APP}.hibernate" />
+    <property name="FILE_NAME_ERROR" value="${FILE_NAME_APP}.error" />
+    <property name="LOGS_PATH" value="logs" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="APP-FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_PATH}/${FILE_NAME_APP}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="MAIN-FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_PATH}/${FILE_NAME_MAIN}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="HIBERNATE-FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_PATH}/${FILE_NAME_HIBERNATE}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR-FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_PATH}/${FILE_NAME_ERROR}.log</file>
+        <encoder>fresche
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="THREAD" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>thread</key>
+            <defaultValue>unknown</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE-${thread}" class="ch.qos.logback.core.FileAppender">
+                <file>${LOGS_PATH}/${FILE_NAME_APP}.${thread}.log</file>
+                <append>false</append>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>%d{yyyy-MM-dd HH:mm} [[%mdc]] [%thread] %-5level %logger{12} - %msg%n</pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <logger name="org.spring" level="debug">
+        <appender-ref ref="APP-FILE" />
+        <appender-ref ref="THREAD" />
+    </logger>
+
+    <logger name="org.hibernate" level="debug">
+        <appender-ref ref="APP-FILE" />
+        <appender-ref ref="HIBERNATE-FILE" />
+    </logger>
+    
+    <logger name="org.apache" level="debug">
+        <appender-ref ref="APP-FILE" />
+    </logger>
+    
+    <logger name="ca.ghandalf" level="debug">
+        <appender-ref ref="APP-FILE" />
+        <appender-ref ref="THREAD" />
+    </logger>
+
+    <logger name="error" level="error">
+        <appender-ref ref="APP-FILE" />
+        <appender-ref ref="ERROR-FILE" />
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="MAIN-FILE" />
+    </root>
+
+</configuration>

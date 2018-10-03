@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="Create-0001" author="Francis Ouellet" dbms="postgresql, hsqldb">
+        <comment>First creation of table Item</comment>
+        <sql dbms="postgresql" endDelimiter="">
+            create table Books (
+            id bigint not null primary key,
+            title text,
+            author text,
+            ISBN text,
+            description text,
+            year int
+            )
+        </sql>
+        <rollback>drop table Books;</rollback>
+    </changeSet>
+
+    <changeSet id="Create=002" author="Ghandalf" dbms="postgresql, hsqldb">
+        <sql dbms="postgresql" endDelimiter="">
+            create table Shoppings (
+            id bigint not null primary key,
+            bookId bigint not null
+            );
+        </sql>
+        <rollback>drop table Shoppings;</rollback>
+    </changeSet>
+
+<!--    <changeSet id="Create-003" author="Ghandalf" dbms="postgresql, hsqkdb">
+        <sql>
+            create table shoppings_books (
+            shoppingId bigint not null constraint references Shoppings(id),
+            bookId bigint not null constraint references Books(id),
+            numberOfBook int,
+            primary key(shoppingId, bookId),
+            constraints sho
+        </sql>
+    </changeSet>-->
+    
+    <changeSet id="Tag_0.0.1" author="Ghandalf">
+        <tagDatabase tag="0.0.1" />
+    </changeSet>
+	
+</databaseChangeLog>

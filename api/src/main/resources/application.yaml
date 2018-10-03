@@ -1,0 +1,30 @@
+spring:
+  profiles.active: dev
+  application.name: Urban Mobility
+
+server:
+  port: 8022
+---
+spring:
+  profiles: dev
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost/urban
+    username: tutori
+    password: tutori
+  jpa:
+    database: postgresql
+    show-sql: true
+
+---
+spring:
+  profiles: test
+  datasource:
+    driverClassName: org.hsqldb.jdbcDriver
+    url: jdbc:hsqldb:file:logs/hsqlDB
+    username: 
+    password: 
+  jpa:
+    database: hsqldb
+    show-sql: true
+

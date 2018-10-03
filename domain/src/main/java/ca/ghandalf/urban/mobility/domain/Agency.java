@@ -1,5 +1,6 @@
 package ca.ghandalf.urban.mobility.domain;
 
+
 public class Agency {
 
   public int id;

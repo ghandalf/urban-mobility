@@ -5,6 +5,8 @@
 proto
 run.sh
 scripts
+generated-modules/
+shopping-example/
 
 .tmp
 **/.tmp

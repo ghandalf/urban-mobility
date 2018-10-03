@@ -1,0 +1,41 @@
+spring:
+  profiles.active: dev
+  application.name: Urban Mobility
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.xml
+server:
+  port: 8020
+---
+spring:
+  profiles: dev
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/UrbanMobility
+    username: urbanadmin
+    password: Urb@n@dm!n
+  jpa:
+    database: postgresql
+    show-sql: true
+    properties:
+        hibernate:
+            temp:
+                use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    
+#liquibase:
+#  enabled: true
+#  drop-first: false
+#  contexts: dev
+---
+spring:
+  profiles: test
+  datasource:
+    driverClassName: org.hsqldb.jdbcDriver
+    url: jdbc:hsqldb:file:logs/hsqlDB
+    username: 
+    password: 
+  jpa:
+    database: hsqldb
+    show-sql: true
+#liquibase:
+#  enabled: false
