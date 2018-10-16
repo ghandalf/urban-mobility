@@ -33,7 +33,7 @@ public class BookController {
     @Autowired
     private BookService service;
     
-    @CrossOrigin
+//    @CrossOrigin
     @RequestMapping("/info")
     @ResponseStatus(value = HttpStatus.OK)
     public String root() {

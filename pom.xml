@@ -248,7 +248,7 @@
 					<configuration>
 						<toolchains>
 							<jdk>
-								<version>[10,)</version>
+								<version>10</version>
 								<vendor>oracle</vendor>
 							</jdk>
 						</toolchains>
@@ -283,7 +283,7 @@
 							<configuration>
 								<rules>
 									<requireMavenVersion>
-										<version>3.5.4</version>
+										<version>[3.5.3,)</version>
 									</requireMavenVersion>
 								</rules>
 							</configuration>
