@@ -15,7 +15,9 @@ import java.util.Objects;
 //@Embeddable
 public class Carts implements Serializable {
     
-//    @Column(name = "bookId")
+	private static final long serialVersionUID = -4634585050536012687L;
+
+	//    @Column(name = "bookId")
     private int bookId;
     
 //    @Column(name = "userId")

@@ -20,7 +20,9 @@ import javax.persistence.Table;
 //@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Shopping implements Serializable {
     
-    @Id
+	private static final long serialVersionUID = 4837712423525177732L;
+
+	@Id
     @Column(name = "id", nullable = false)
     private long id;
     

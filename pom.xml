@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ca.ghandalf.urban.mobility</groupId>
-	<artifactId>parent</artifactId>
-	<version>0.0.9</version>
+	<artifactId>urban-mobility</artifactId>
+	<version>0.1.0</version>
 	<packaging>pom</packaging>
 
 	<name>parent</name>
@@ -15,99 +15,70 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.0.M4</version>
+		<version>2.1.0.RC1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
-		<project.current.version>0.0.9</project.current.version>
-		<spring.boot.version>2.1.0.M4</spring.boot.version>
+		<!-- For now to make sure that I have the latest milestone version look under https://repo.spring.io/milestone
+			https://repo.spring.io/milestone/org/springframework/boot/spring-boot-starter-parent/
+			https://repo.spring.io/milestone/org/springframework/spring-context/
+			
+			mvn versions:display-dependency-updates
+			Will give you some other updates, we need to make sure that the project compile in terminal and Eclipse
+		-->
+		<spring.boot.version>2.1.0.RC1</spring.boot.version>
+		<spring.version>5.1.1.RELEASE</spring.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>10</java.version>
-		<maven.compiler.source>10</maven.compiler.source>
-		<maven.compiler.target>10</maven.compiler.target>
+		<java.version>jdk-11.0.1</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
 
 	<repositories>
 		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
+			<id>spring-repo</id>
+			<name>Spring Repository</name>
+			<url>https://repo.spring.io/release</url>
+		</repository>
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone Repository</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshot Repository</name>
 			<url>https://repo.spring.io/snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</repository>
-
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>maven.oracle.com</id>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<url>https://maven.oracle.com</url>
-			<layout>default</layout>
 		</repository>
 	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		
-		<pluginRepository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		
-		<pluginRepository>
-			<id>maven.oracle.com</id>
-			<url>https://maven.oracle.com</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>ca.ghandalf.urban.mobility</groupId>
 				<artifactId>domain</artifactId>
-				<version>${project.current.version}</version>
+				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ca.ghandalf.urban.mobility</groupId>
 				<artifactId>handler</artifactId>
-				<version>${project.current.version}</version>
+				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ca.ghandalf.urban.mobility</groupId>
 				<artifactId>repository</artifactId>
-				<version>${project.current.version}</version>
+				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ca.ghandalf.urban.mobility</groupId>
 				<artifactId>service</artifactId>
-				<version>${project.current.version}</version>
+				<version>${project.parent.version}</version>
 			</dependency>
 
 			<!-- DOMAIN -->
@@ -116,18 +87,13 @@
 				<artifactId>javax.persistence-api</artifactId>
 				<version>2.2</version>
 			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>2.9.7</version>
-			</dependency>
 			<!-- END DOMAIN -->
 
 			<!-- HANDLER -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>5.1.0.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<!-- END HANDLER -->
 
@@ -157,11 +123,20 @@
 
 			<!-- REST-API -->
 			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
-				<version>5.1.0.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 			<!-- END REST-API -->
 
 			<dependency>
@@ -175,173 +150,127 @@
 
 	<modules>
 		<module>domain</module>
-		<module>handler</module>
 		<module>repository</module>
+		<module>handler</module>
 		<module>service</module>
 		<module>rest-api</module>
 	</modules>
 
 	<build>
 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-toolchains-plugin</artifactId>
-										<versionRange>[1.1,)</versionRange>
-										<goals>
-											<goal>toochain</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
+		<!-- <pluginManagement> -->
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jdeps-plugin</artifactId>
-					<version>3.1.1</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>jdkinternals</goal> <!-- verify main classes -->
-								<goal>test-jdkinternals</goal> <!-- verify test classes -->
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
-					<configuration>
-						<release>10</release>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>1.1</version>
-					<executions>
-						<execution>
-							<phase>validate</phase>
-							<goals>
-								<goal>toolchain</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<toolchains>
-							<jdk>
-								<version>10</version>
-								<vendor>oracle</vendor>
-							</jdk>
-						</toolchains>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.7</version>
-					<configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>dependency-updates-report</report>
-									<report>plugin-updates-report</report>
-									<report>property-updates-report</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0-M2</version>
-					<executions>
-						<execution>
-							<id>enforce-maven</id>
-							<goals>
-								<goal>enforce</goal>
-							</goals>
-							<configuration>
-								<rules>
-									<requireMavenVersion>
-										<version>[3.5.3,)</version>
-									</requireMavenVersion>
-								</rules>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.0</version>
-					<configuration>
-						<argLine>
-							--illegal-access=permit
-						</argLine>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.22.0</version>
-					<configuration>
-						<argLine>
-							--illegal-access=permit
-						</argLine>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<!-- <plugin> -->
+		<!-- <groupId>org.apache.maven.plugins</groupId> -->
+		<!-- <artifactId>maven-jdeps-plugin</artifactId> -->
+		<!-- <version>3.1.1</version> -->
+		<!-- <executions> -->
+		<!-- <execution> -->
+		<!-- <goals> -->
+		<!-- <goal>jdkinternals</goal> verify main classes -->
+		<!-- <goal>test-jdkinternals</goal> verify test classes -->
+		<!-- </goals> -->
+		<!-- </execution> -->
+		<!-- </executions> -->
+		<!-- <configuration> -->
+		<!-- </configuration> -->
+		<!-- </plugin> -->
+
+
+
+		<!-- <plugin> -->
+		<!-- <groupId>org.apache.maven.plugins</groupId> -->
+		<!-- <artifactId>maven-surefire-plugin</artifactId> -->
+		<!-- <version>2.22.0</version> -->
+		<!-- <configuration> -->
+		<!-- <argLine>illegal-access=permit</argLine> -->
+		<!-- </configuration> -->
+		<!-- </plugin> -->
+		<!-- <plugin> -->
+		<!-- <groupId>org.apache.maven.plugins</groupId> -->
+		<!-- <artifactId>maven-failsafe-plugin</artifactId> -->
+		<!-- <version>2.22.0</version> -->
+		<!-- <configuration> -->
+		<!-- <argLine> -->
+		<!-- illegal-access=permit -->
+		<!-- </argLine> -->
+		<!-- </configuration> -->
+		<!-- </plugin> -->
+		<!-- </plugins> -->
+		<!-- </pluginManagement> -->
 
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.m2e</groupId>
-				<artifactId>lifecycle-mapping</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<toolchains>
+						<jdk>
+							<version>jdk-11.0.1</version>
+							<vendor>oracle</vendor>
+						</jdk>
+					</toolchains>
+				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<!-- To bad embedded maven in eclipse is 3.5.3 version -->
+									<version>[3.5.3,)</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<configuration>
+					<reportSets>
+						<reportSet>
+							<reports>
+								<report>dependency-updates-report</report>
+								<report>plugin-updates-report</report>
+								<report>property-updates-report</report>
+							</reports>
+						</reportSet>
+					</reportSets>
+				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
+
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
+			<!-- </plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-failsafe-plugin</artifactId> -->
+			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>

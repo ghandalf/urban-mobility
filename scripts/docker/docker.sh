@@ -32,7 +32,8 @@ function start() {
         postgres)
             # see: https://hub.docker.com/r/library/postgres/
             #docker run -d -p 5432:5432 --name docker-postgres -v /data/app/db/PostgreSQLDataDocker/postgresql -e POSTGRES_PASSWORD=postgres postgres
-            docker run -d -p 5432:5432 --name docker-postgres -v postgresql-data:/data/app/db/PostgreSQLDataDocker/postgresql -e POSTGRES_DB=UrbanMobility -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
+            #docker run -d -p 5432:5432 --name docker-postgres -v postgresql-data:/data/app/db/PostgreSQLDataDocker/postgresql -e POSTGRES_DB=UrbanMobility -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
+            docker start 0a3e218c1b36
             echo -e "\n\t PostgreSQL started\n";
             # Connect directly on command line to postgresql
             # docker run -it --rm --link docker-postgres:postgres postgres psql -h postgres -U postgres
@@ -44,7 +45,7 @@ function start() {
             # psql -h 127.0.0.1 -U urbanadmin -p 5432
             # psql -h localhost -U postgres 
             
-            createUser;
+            # createUser;
             ;;
         redis)
             # see: https://hub.docker.com/_/redis/

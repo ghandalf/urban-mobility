@@ -24,7 +24,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     public Shopping read(Long id) throws ShoppingException {
-        return null; //repository.findById(id).orElseThrow(() -> new ShoppingException("Shopping with id: " + id + " was not found."));
+        return shoppingRepository.findById(id).orElseThrow(() -> new ShoppingException("Shopping with id: " + id + " was not found."));
     }
 
     @Override

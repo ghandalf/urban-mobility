@@ -2,7 +2,12 @@
 package ca.ghandalf.urban.mobility.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -17,17 +22,16 @@ import javax.persistence.Table;
 //@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Book implements Serializable {
     
-    @Id
+ 	private static final long serialVersionUID = 2925869172055035840L;
+
+	@Id
     @Column(name = "id", nullable = false)
-    private long Id;
+    private UUID id;
     
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
     
-    @Column(name = "author")
-    private String author;
-    
-    @Column(name = "ISBN")
+    @Column(name = "ISBN", nullable = false)
     private String isbn;
 
     @Column(name = "year")
@@ -36,17 +40,40 @@ public class Book implements Serializable {
     @Column(name = "description")
     private String description;
     
+    @ElementCollection
+    private Set<Author> authors;
+    
 //    @ManyToOne(fetch = FetchType.LAZY, optional = true)
 //    @JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
+//    @ElementCollection
 //    private Shopping shopping;
 
-    public long getId() {
-        return Id;
-    }
+    /**
+     * Use by Jackson
+     */
+    protected Book() {}
+    
+    public Book(String title, String isbn, int year, String description, Set<Author> authors) {
+		this.id = UUID.randomUUID();
+		this.title = title;
+		this.isbn = isbn;
+		this.year = year;
+		this.description = description;
+		this.authors = authors;
+	}
 
-    public void setId(long Id) {
-        this.Id = Id;
+    public Book(String title, String author, String isbn, int year, String description) {
+		this(title, isbn, year, description, new HashSet<>());
+	}
+
+    public void addAuthor(Author author) {
+    	this.authors.add(author);
     }
+    
+	public UUID getId() {
+        return this.id;
+    }
+ 
 
     public String getTitle() {
         return title;
@@ -54,14 +81,6 @@ public class Book implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getIsbn() {
@@ -88,4 +107,20 @@ public class Book implements Serializable {
         this.description = description;
     }
 
+	public Set<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(Set<Author> authors) {
+		this.authors = authors;
+	}
+
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", title=" + title + ", isbn=" + isbn + ", year=" + year 
+				+ ", description=" + description 
+				+  ", authors=" + authors + "]";
+	}
+
+    
 }

@@ -4,6 +4,9 @@ package ca.ghandalf.urban.mobility.service;
 import ca.ghandalf.urban.mobility.domain.Book;
 import ca.ghandalf.urban.mobility.repository.BookRepository;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +22,13 @@ public class BookServiceImpl implements BookService {
     
     @Override
     public Book create(Book book) {
-        return null; //repository.save(book);
+        return bookRepository.save(book);
     }
 
     @Override
-    public Book read(Long id) throws BookException {
-        return null; //repository.findById(id).orElseThrow(() -> new BookException("Book with id: " + id + " was not found."));
+    public Book read(UUID id) throws BookException {
+    	Optional<Book> result = bookRepository.findById(id); //.orElseThrow(() -> new BookException("Book with id: " + id + " was not found."));
+        return result.get();
     }
 
     @Override

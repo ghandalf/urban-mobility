@@ -12,14 +12,18 @@
 
     <parent>
         <groupId>ca.ghandalf.urban.mobility</groupId>
-        <artifactId>parent</artifactId>
-        <version>0.0.9</version>
+        <artifactId>urban-mobility</artifactId>
+        <version>0.1.0</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>ca.ghandalf.urban.mobility</groupId>
             <artifactId>domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ca.ghandalf.urban.mobility</groupId>
+            <artifactId>repository</artifactId>
         </dependency>
         
         <dependency>
@@ -30,29 +34,29 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <index>true</index>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>                       
-                        <manifestEntries>
-                            <Automatic-Module-Name>ca.ghandalf.urban.mobility.handler</Automatic-Module-Name>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
+<!--             <plugin> -->
+<!--                 <groupId>org.apache.maven.plugins</groupId> -->
+<!--                 <artifactId>maven-jar-plugin</artifactId> -->
+<!--                 <configuration> -->
+<!--                     <archive> -->
+<!--                         <index>true</index> -->
+<!--                         <manifest> -->
+<!--                             <addClasspath>true</addClasspath> -->
+<!--                         </manifest>                        -->
+<!--                         <manifestEntries> -->
+<!--                             <Automatic-Module-Name>ca.ghandalf.urban.mobility.handler</Automatic-Module-Name> -->
+<!--                         </manifestEntries> -->
+<!--                     </archive> -->
+<!--                 </configuration> -->
+<!--             </plugin> -->
+<!--             <plugin> -->
+<!--                 <groupId>org.codehaus.mojo</groupId> -->
+<!--                 <artifactId>versions-maven-plugin</artifactId> -->
+<!--             </plugin> -->
+<!--             <plugin> -->
+<!--                 <groupId>org.apache.maven.plugins</groupId> -->
+<!--                 <artifactId>maven-enforcer-plugin</artifactId> -->
+<!--             </plugin> -->
         </plugins>
     </build>
 

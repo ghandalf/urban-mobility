@@ -5,15 +5,20 @@
  */
 package ca.ghandalf.urban.mobility.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import ca.ghandalf.urban.mobility.domain.Book;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+
+import ca.ghandalf.urban.mobility.domain.Book;
 
 /**
  *
  * @author ghandalf
  */
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository extends PagingAndSortingRepository<Book, UUID> {
     
+	Optional<Book> findByIsbn(String isbn);
 }

@@ -7,7 +7,9 @@ package ca.ghandalf.urban.mobility.service;
  */
 public class BookException extends Exception {
     
-    public BookException(String message) {
+ 	private static final long serialVersionUID = -6764558778798031667L;
+
+	public BookException(String message) {
         super(message);
     }
 }

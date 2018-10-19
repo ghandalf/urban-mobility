@@ -7,7 +7,9 @@ package ca.ghandalf.urban.mobility.service;
  */
 public class ShoppingException extends Exception {
     
-    public ShoppingException(String message) {
+ 	private static final long serialVersionUID = 4116812803087514256L;
+
+	public ShoppingException(String message) {
         super(message);
     }
 }

@@ -15,7 +15,9 @@ import java.io.Serializable;
 //@Table(name = "Users")
 public class User implements Serializable {
     
-//    @Id
+	private static final long serialVersionUID = 4866524392215841802L;
+
+	//    @Id
 //    @Column(name = "id", nullable = false)
     private long id;
     
