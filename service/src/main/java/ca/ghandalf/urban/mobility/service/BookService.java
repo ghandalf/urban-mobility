@@ -3,7 +3,6 @@ package ca.ghandalf.urban.mobility.service;
 
 import ca.ghandalf.urban.mobility.domain.Book;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**

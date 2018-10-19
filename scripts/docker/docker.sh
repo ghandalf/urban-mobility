@@ -11,7 +11,7 @@ command=$1
 
 function usage() {
     echo -e "\n\tUsage:";
-    echo -e "\t\t$0 <clean|start|show|stop>";
+    echo -e "\t\t$0 <clean|db|start|show|stop>";
     echo -e "\n";
 }
 
@@ -99,14 +99,43 @@ function test() {
 }
 
 function createUser() {
-	psql -h localhost -p 5432 -d UrbanMobility -f ./scripts/postgresql/CreateApiDB.sql -U postgres
+	psql -h localhost -p 5432 -d UrbanMobility -f ./scripts/postgresql/CreateDB.sql -U postgres
 	psql -h localhost -p 5432 -d UrbanMobility -f ./scripts/postgresql/CreateUser.sql -U postgres 
+}
+
+function dropTables() { 
+	psql -h localhost -p 5432 -d UrbanMobility -f ./scripts/postgresql/DropTables.sql -U postgres
+}
+
+function createTables() { 
+	psql -h localhost -p 5432 -d UrbanMobility -f ./scripts/postgresql/CreateTables.sql -U postgres
+}
+
+# password: postgres
+function db() { 
+	case $1 in 
+		create)
+			createTables;
+			;;
+		drop)
+			dropTables;
+			;;
+		user)
+			createUser;
+			;;
+		*)
+            echo -e "\n\t Please provide a command: <create|drop|user> \n";
+            ;;
+	esac
 }
 
 case ${command} in
     clean)
         cleanUp;
         ;;
+	db)
+		db $2;
+		;;
     start)
         start $2;
         ;;

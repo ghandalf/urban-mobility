@@ -1,82 +1,123 @@
 package ca.ghandalf.urban.mobility.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-public class Agency {
+/**
+ * 
+ * @author ghandalf
+ *
+ * @see https://developers.google.com/transit/gtfs/reference/?hl=en-FR#agencytxt
+ * @see https://code.google.com/archive/p/googletransitdatafeed/wikis/PublicFeeds.wiki
+ * @see http://donnees.ville.montreal.qc.ca/dataset/stm-horaires-planifies-et-trajets-des-bus-et-du-metro/resource/5aeab6ed-bab3-4e51-981a-a83883dc4b94
+ * 
+ */
+@Entity
+@Table(name = "Entities")
+public class Agency extends BaseEntity {
 
-  public int id;
-  public String name;
-  public String url;
-  public String timezone;
-  public String language;
-  public String phone;
-  public String fareUrl;
-  
-  public int getId() {
-    return this.id;
-  }
+	private static final long serialVersionUID = 4137977373223153997L;
 
-  public void setId(int id) {
-    this.id = id;
-  }
+	@Column(name = "agency_id", insertable = true, length = 128, nullable = true, updatable = true)
+	public String agencyId;
+	
+	@Column(name = "name", insertable = true, length = 128, nullable = false, updatable = true)
+	public String name;
 
-  public String getName() {
-    return this.name;
-  }
+	@Column(name = "url", insertable = true, length = 256, nullable = false, updatable = true)
+	public String url;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	@Column(name = "timezone", insertable = true, length = 4, nullable = false, updatable = true)
+	public String timezone;
 
-  public String getUrl() {
-    return this.url;
-  }
+	@Column(name = "language", insertable = true, length = 8, nullable = true, updatable = true)
+	public String language;
 
-  public void setUrl(String url) {
-    this.url = url;
-  }
+	@Column(name = "phone", insertable = true, length = 32, nullable = true, updatable = true)
+	public String phone;
 
-  public String getTimezone() {
-    return this.timezone;
-  }
+	@Column(name = "fareUrl", insertable = true, length = 256, nullable = true, updatable = true)
+	public String fareUrl;
 
-  public void setTimezone(String timezone) {
-    this.timezone = timezone;
-  }
+	@Column(name = "email", insertable = true, length = 128, nullable = true, updatable = true)
+	public String email;
 
-  public String getLanguage() {
-    return this.language;
-  }
+	/**
+	 * Convenient base constructor
+	 */
+	public Agency() {
+	}
 
-  public void setLanguage(String language) {
-    this.language = language;
-  }
+	public String getAgencyId() {
+		return agencyId;
+	}
 
-  public String getPhone() {
-    return this.phone;
-  }
+	public void setAgencyId(String agencyId) {
+		this.agencyId = agencyId;
+	}
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public String getFareUrl() {
-    return this.fareUrl;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setFareUrl(String fareUrl) {
-    this.fareUrl = fareUrl;
-  }
+	public String getUrl() {
+		return url;
+	}
 
-  public String toString() {
-    return 
-    "Agency: ["
-    + "id : " + this.id
-    + ", name : " + this.name
-    + ", url : " + this.url
-    + ", timezone : " + this.timezone
-    + ", language : " + this.language
-    + ", phone : " + this.phone
-    + ", fareUrl : " + this.fareUrl
-    + "]";
-  }
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getFareUrl() {
+		return fareUrl;
+	}
+
+	public void setFareUrl(String fareUrl) {
+		this.fareUrl = fareUrl;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "Agency [id=" + getId() + ", agencyId=" + agencyId + ", name=" + name + ", url=" + url + ", timezone=" + timezone
+				+ ", language=" + language + ", phone=" + phone + ", fareUrl=" + fareUrl + ", email=" + email
+				 + "]";
+	}
+
 }
