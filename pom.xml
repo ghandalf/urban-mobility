@@ -160,12 +160,12 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>01-domain</module>
-		<module>02-repository</module>
-		<module>03-handler</module>
-		<module>04-business</module>
-		<module>05-ws-api</module>
-		<module>06-presentation</module>
+		<module>domain</module>
+		<module>repository</module>
+		<module>handler</module>
+		<module>business</module>
+		<module>ws-api</module>
+		<module>presentation</module>
 	</modules>
 
 	<build>

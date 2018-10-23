@@ -1,7 +1,7 @@
 #!/bin/bash
 
 root=../urban-mobility
-ws=../urban-mobility/05-ws-api
+ws=../urban-mobility/ws-api
 
 # see: https://www.mojohaus.org/versions-maven-plugin/usage.html
 # mvn versions:display-plugin-updates
