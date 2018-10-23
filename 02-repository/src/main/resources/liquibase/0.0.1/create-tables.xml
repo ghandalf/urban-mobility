@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="Create-0001" author="Ghandalf" dbms="postgresql, hsqldb">
+        <sql dbms="postgresql" endDelimiter="">
+			CREATE TABLE Agencies (
+			    id uuid not null primary key,
+			    agency_id VARCHAR(128),
+			    name VARCHAR(128) NOT NULL,
+			    url VARCHAR(256) NOT NULL,
+			    timezone VARCHAR(4) NOT NULL,
+			    language VARCHAR(8),
+			    phone VARCHAR(32),
+			    fareurl VARCHAR(256),
+			    email VARCHAR(128)
+			);
+        </sql>
+        <rollback>drop table Agencies;</rollback>
+    </changeSet>
+
+    <changeSet id="Tag_0.0.1" author="Ghandalf">
+        <tagDatabase tag="0.0.1" />
+    </changeSet>
+	
+</databaseChangeLog>

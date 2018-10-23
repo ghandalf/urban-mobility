@@ -6,10 +6,10 @@
 
 	<groupId>ca.ghandalf.urban.mobility</groupId>
 	<artifactId>urban-mobility</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.2</version>
 	<packaging>pom</packaging>
 
-	<name>parent</name>
+	<name>urban-mobility</name>
 	<description>Urban repository project use to get the data from GTFS, GBFS protocol</description>
 
 	<parent>
@@ -20,13 +20,11 @@
 	</parent>
 
 	<properties>
-		<!-- For now to make sure that I have the latest milestone version look under https://repo.spring.io/milestone
-			https://repo.spring.io/milestone/org/springframework/boot/spring-boot-starter-parent/
-			https://repo.spring.io/milestone/org/springframework/spring-context/
-			
-			mvn versions:display-dependency-updates
-			Will give you some other updates, we need to make sure that the project compile in terminal and Eclipse
-		-->
+		<!-- For now to make sure that I have the latest milestone version look 
+			under https://repo.spring.io/milestone https://repo.spring.io/milestone/org/springframework/boot/spring-boot-starter-parent/ 
+			https://repo.spring.io/milestone/org/springframework/spring-context/ mvn 
+			versions:display-dependency-updates Will give you some other updates, we 
+			need to make sure that the project compile in terminal and Eclipse -->
 		<spring.boot.version>2.1.0.RC1</spring.boot.version>
 		<spring.version>5.1.1.RELEASE</spring.version>
 
@@ -58,6 +56,14 @@
 		</repository>
 	</repositories>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring.plugins.release</id>
+			<name>Spring Plugins Release</name>
+			<url>https://repo.spring.io/plugins-release/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -67,61 +73,60 @@
 			</dependency>
 			<dependency>
 				<groupId>ca.ghandalf.urban.mobility</groupId>
-				<artifactId>handler</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ca.ghandalf.urban.mobility</groupId>
 				<artifactId>repository</artifactId>
 				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ca.ghandalf.urban.mobility</groupId>
-				<artifactId>service</artifactId>
+				<artifactId>handler</artifactId>
+				<version>${project.parent.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.ghandalf.urban.mobility</groupId>
+				<artifactId>business</artifactId>
+				<version>${project.parent.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.ghandalf.urban.mobility</groupId>
+				<artifactId>ws-api</artifactId>
 				<version>${project.parent.version}</version>
 			</dependency>
 
-			<!-- DOMAIN -->
+			<!-- domain dependencies -->
 			<dependency>
 				<groupId>javax.persistence</groupId>
 				<artifactId>javax.persistence-api</artifactId>
 				<version>2.2</version>
 			</dependency>
-			<!-- END DOMAIN -->
 
-			<!-- HANDLER -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<!-- END HANDLER -->
-
-			<!-- REPOSITORY -->
+			<!-- repository dependencies -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-jpa</artifactId>
 				<version>${spring.boot.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-test</artifactId>
-				<version>${spring.boot.version}</version>
-				<scope>test</scope>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-core</artifactId>
+				<version>3.6.2</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
 				<version>42.2.5</version>
 			</dependency>
-			<!-- END REPOSITORY -->
+			
+            <!-- handler dependencies -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 
-			<!-- SERVICE -->
+			<!-- service dependencies -->
 
-			<!-- END SERVICE -->
 
-			<!-- REST-API -->
+			<!-- ws-api -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
@@ -137,8 +142,14 @@
 				<artifactId>spring-beans</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-			<!-- END REST-API -->
 
+            <!-- tests dependencies -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${spring.boot.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
@@ -149,11 +160,12 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>domain</module>
-		<module>repository</module>
-		<module>handler</module>
-		<module>service</module>
-		<module>rest-api</module>
+		<module>01-domain</module>
+		<module>02-repository</module>
+		<module>03-handler</module>
+		<module>04-business</module>
+		<module>05-ws-api</module>
+		<module>06-presentation</module>
 	</modules>
 
 	<build>
@@ -175,8 +187,6 @@
 		<!-- <configuration> -->
 		<!-- </configuration> -->
 		<!-- </plugin> -->
-
-
 
 		<!-- <plugin> -->
 		<!-- <groupId>org.apache.maven.plugins</groupId> -->
@@ -262,8 +272,37 @@
 					</reportSets>
 				</configuration>
 			</plugin>
-
-			<!-- <plugin> -->
+<!--
+@see: https://medium.com/spektrakel-blog/angular-in-the-enterprise-building-angular-apps-through-maven-3ca535152f85
+			<plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>update node and yarn</id>
+                        <goals>
+                            <goal>install-node-and-yarn</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                    <execution>
+                        <id>yarn install</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install frozen-lockfile non-interactive</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nodeVersion>v10.10.0</nodeVersion>
+                    <yarnVersion>v1.10,1</yarnVersion>
+                </configuration>
+            </plugin>
+-->
+            <!-- <plugin> -->
 			<!-- <groupId>org.apache.maven.plugins</groupId> -->
 			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
 			<!-- </plugin> -->

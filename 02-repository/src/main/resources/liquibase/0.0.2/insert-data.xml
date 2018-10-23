@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="Insert-0001" author="Ghandalf" dbms="postgresql, hsqldb">
+        <sql>
+			INSERT INTO Agencies 
+			(
+				id,
+				agency_id,
+				name,
+				url,
+				timezone,
+				language,
+				phone,
+				fareUrl,
+				email
+			)
+			VALUES
+			(
+				'76ed93a9-f1b4-4ea8-a402-e1a36e286451',
+				'STM',
+				'Société de transport de Montréal',
+				'http://www.stm.info,America/Montreal',
+				'fr',
+				'',
+				'',
+				'http://www.stm.info/fr/infos/titres-et-tarifs',
+				''
+			);           
+        </sql>
+        <rollback>
+            <sql>
+                delete from Agencies where id='76ed93a9-f1b4-4ea8-a402-e1a36e286451';
+            </sql>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="Tag_0.0.2" author="Ghandalf">
+        <tagDatabase tag="0.0.2" />
+    </changeSet>
+	
+</databaseChangeLog>

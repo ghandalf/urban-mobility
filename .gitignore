@@ -2,9 +2,10 @@
 .DS_Store
 **/.DS_Store
 
-proto
-run.sh
-generated-modules/
+node/**
+zremoved
+node_modules/**
+**/node_modules
 
 .tmp
 **/.tmp
@@ -29,21 +30,17 @@ generated-modules/
 *.log
 **/*.log
 
-bin
-**/bin
-
 logs
 **/logs
 
+bin
+**/bin
+
 .vscode
 **/.vscode
-
-**/cities
-repository/cities
 
 target
 **/target
 
 **/test-output
 
-repository/src/main/resources/cities/**
