@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -109,6 +110,16 @@ public class AgencyController {
 	 */
 	@GetMapping(path = "/read/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Agency read(@PathVariable(name = "id", required = true) UUID id ) {
+		if ( service.read(id).isPresent() ) {
+			return service.read(id).get();
+		} else {
+			logger.debug("The agency identifier don't exist.");
+			return null;
+		}
+	}
+	
+	@GetMapping(path = "/read", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Agency read2(@RequestParam(name = "id", required = true) UUID id ) {
 		if ( service.read(id).isPresent() ) {
 			return service.read(id).get();
 		} else {
