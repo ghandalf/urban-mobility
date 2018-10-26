@@ -5,6 +5,13 @@ import org.springframework.stereotype.Component;
 import ca.ghandalf.urban.mobility.domain.Agency;
 import ca.ghandalf.urban.mobility.dto.AgencyDTO;
 
+/**
+ * This class has been created to avoid 
+ * 	Persistent entities should not be used as arguments of "@RequestMapping" methods (squid:S4684)
+ * 
+ * @author ghandalf
+ *
+ */
 @Component
 public class AgencyMapper {
 
@@ -12,8 +19,7 @@ public class AgencyMapper {
 
 		Agency result = new Agency();
 
-		// Here if the dto has been manipulated it will have his id, otherwise result
-		// will created one once the instance is created.
+		// Here, if the dto has been manipulated, it will have his id, otherwise it will be assign once the instance is created.
 		if (dto.getId() != null) {
 			result.setId(dto.getId());
 		}

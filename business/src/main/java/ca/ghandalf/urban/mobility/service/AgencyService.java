@@ -5,10 +5,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import ca.ghandalf.urban.mobility.domain.Agency;
+import ca.ghandalf.urban.mobility.dto.AgencyDTO;
 
 public interface AgencyService {
 
-    public Optional<Agency> create(Agency entity);
+    public Optional<AgencyDTO> create(AgencyDTO dto);
     
     public Optional<Agency> read(UUID id);
     

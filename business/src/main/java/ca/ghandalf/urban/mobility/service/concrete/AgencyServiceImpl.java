@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.ghandalf.urban.mobility.domain.Agency;
+import ca.ghandalf.urban.mobility.dto.AgencyDTO;
+import ca.ghandalf.urban.mobility.mapper.AgencyMapper;
 import ca.ghandalf.urban.mobility.repository.AgencyRepository;
 import ca.ghandalf.urban.mobility.service.AgencyService;
 
@@ -16,34 +18,34 @@ public class AgencyServiceImpl implements AgencyService {
 
 	@Autowired
 	private AgencyRepository repository;
-	
-	@Override
-	public Optional<Agency> create(Agency entity) {
-		// FIXME review this one
-		return Optional.of(repository.save(entity));
+
+	@Autowired
+	private AgencyMapper mapper;
+
+	public Optional<AgencyDTO> create(AgencyDTO dto) {
+		Agency entity = mapper.fromDTO(dto);
+		
+		entity = repository.save(entity);
+
+		return Optional.of(mapper.fromEntity(entity));
 	}
 
-	@Override
 	public Optional<Agency> read(UUID id) {
 		return repository.findById(id);
 	}
 
-	@Override
 	public Optional<Agency> update(Agency entity) {
 		return Optional.of(repository.save(entity));
 	}
 
-	@Override
 	public void delete(Agency entity) {
 		repository.delete(entity);
 	}
 
-	@Override
 	public Optional<List<Agency>> findAll() {
 		return Optional.of(repository.findAll());
 	}
 
-	@Override
 	public Optional<Agency> findByAgencyId(String agencyId) {
 		return Optional.of(repository.findByAgencyId(agencyId));
 	}

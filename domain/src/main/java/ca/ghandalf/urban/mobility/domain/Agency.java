@@ -26,34 +26,30 @@ public class Agency implements Serializable { // extends BaseEntity {
 	@Id
 	@Column(name = "id", nullable = false, unique = true, updatable = false)
 	private UUID id = UUID.randomUUID();
-
-	public UUID getId() {
-		return this.id;
-	}
 	
 	@Column(name = "agency_id", insertable = true, length = 128, nullable = true, updatable = true)
-	public String agencyId;
+	private String agencyId;
 	
 	@Column(name = "name", insertable = true, length = 128, nullable = false, updatable = true)
-	public String name;
+	private String name;
 
 	@Column(name = "url", insertable = true, length = 256, nullable = false, updatable = true)
-	public String url;
+	private String url;
 
 	@Column(name = "timezone", insertable = true, length = 4, nullable = false, updatable = true)
-	public String timezone;
+	private String timezone;
 
 	@Column(name = "language", insertable = true, length = 8, nullable = true, updatable = true)
-	public String language;
+	private String language;
 
 	@Column(name = "phone", insertable = true, length = 32, nullable = true, updatable = true)
-	public String phone;
+	private String phone;
 
 	@Column(name = "fareurl", insertable = true, length = 256, nullable = true, updatable = true)
-	public String fareUrl;
+	private String fareUrl;
 
 	@Column(name = "email", insertable = true, length = 128, nullable = true, updatable = true)
-	public String email;
+	private String email;
 
 	/**
 	 * Convenient base constructor
@@ -61,6 +57,14 @@ public class Agency implements Serializable { // extends BaseEntity {
 	public Agency() {
 	}
 
+	public UUID getId() {
+		return this.id;
+	}
+	
+	public void setId(UUID id) {
+		this.id = id;
+	}
+	
 	public String getAgencyId() {
 		return agencyId;
 	}
