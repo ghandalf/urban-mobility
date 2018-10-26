@@ -165,7 +165,7 @@
 		<module>handler</module>
 		<module>business</module>
 		<module>ws-api</module>
-		<module>presentation</module>
+		<!-- <module>presentation</module> -->
 	</modules>
 
 	<build>
