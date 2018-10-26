@@ -119,17 +119,6 @@ public class AgencyController {
 		}
 	}
 
-//	@GetMapping(path = "/read", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Agency> get(@RequestParam(name = "id", required = true) UUID id) {
-//		Agency result = service.read(id).isPresent() ? service.read(id).get() : null;
-//
-//		if (result != null) {
-//			return new ResponseEntity<Agency>(result, HttpStatus.OK);
-//		} else {
-//			logger.error("The agency identifier:[{}] don't exist.", id);
-//			return new ResponseEntity<Agency>(HttpStatus.NOT_FOUND);
-//		}
-//	}
 	/**
 	 * Like Post or method create I had always [http 403 forbidden] or in the body
 	 * [Invalid CORS request] using Postman. To fix it in Postman you need to add in
