@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.ghandalf.urban.mobility.domain.Agency;
+import ca.ghandalf.urban.mobility.dto.AgencyDTO;
 import ca.ghandalf.urban.mobility.service.AgencyService;
 
 /**
@@ -85,14 +86,15 @@ public class AgencyController {
 	 * @return
 	 */
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Agency> create(@RequestBody @Valid Agency entity) {
-		Agency result = service.create(entity).isPresent() ? service.create(entity).get() : null;
+	public ResponseEntity<AgencyDTO> create(@RequestBody @Valid AgencyDTO dto) {
+
+		AgencyDTO result = service.create(dto).isPresent() ? service.create(dto).get() : null;
 		if ( result != null ) {
-			return new ResponseEntity<Agency>(result, HttpStatus.OK);
+			return new ResponseEntity<AgencyDTO>(result, HttpStatus.OK);
 		} else {
 			// Error management
-			logger.error("Unable to create the agency:[{}]", entity);
-			return new ResponseEntity<Agency>(HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error("Unable to create the agency:[{}]", dto);
+			return new ResponseEntity<AgencyDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -114,7 +116,7 @@ public class AgencyController {
 			return new ResponseEntity<Agency>(result, HttpStatus.OK);
 		} else {
 			logger.error("The agency identifier:[{}] don't exist.", id);
-			// FIXME: I need to create an error send back to the user telling that the uri is good but the entity didn't exist
+			// FIXME I need to create an error send back to the user telling that the uri is good but the entity didn't exist
 			return new ResponseEntity<Agency>(HttpStatus.ACCEPTED);
 		}
 	}
