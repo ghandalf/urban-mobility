@@ -5,6 +5,7 @@
     <property name="FILE_NAME_APP" value="urban-mobility" />
     <property name="FILE_NAME_MAIN" value="${FILE_NAME_APP}.main" />
     <property name="FILE_NAME_HIBERNATE" value="${FILE_NAME_APP}.hibernate" />
+    <property name="FILE_NAME_SPRING" value="${FILE_NAME_APP}.spring" />
     <property name="FILE_NAME_ERROR" value="${FILE_NAME_APP}.error" />
     <property name="LOGS_PATH" value="logs" />
 
@@ -35,6 +36,13 @@
         </encoder>
     </appender>
 
+    <appender name="SPRING-FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_PATH}/${FILE_NAME_SPRING}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+        </encoder>
+    </appender>
+
     <appender name="ERROR-FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOGS_PATH}/${FILE_NAME_ERROR}.log</file>
         <encoder>fresche
@@ -59,32 +67,27 @@
     </appender>
 
     <logger name="org.spring" level="debug">
-        <appender-ref ref="APP-FILE" />
-        <appender-ref ref="THREAD" />
+        <appender-ref ref="SPRING-FILE" />
+    </logger>
+
+    <logger name="org.springframework" level="debug">
+        <appender-ref ref="SPRING-FILE" />
     </logger>
 
     <logger name="org.hibernate" level="debug">
-        <appender-ref ref="APP-FILE" />
         <appender-ref ref="HIBERNATE-FILE" />
     </logger>
     
-<!--    <logger name="org.apache" level="debug">
+    <logger name="ca.ghandalf.urban.mobility" level="debug">
         <appender-ref ref="APP-FILE" />
-    </logger>-->
-    
-    <logger name="ca.ghandalf" level="debug">
-        <appender-ref ref="APP-FILE" />
-        <appender-ref ref="THREAD" />
     </logger>
 
     <logger name="error" level="error">
-        <appender-ref ref="APP-FILE" />
         <appender-ref ref="ERROR-FILE" />
     </logger>
 
     <root level="debug">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="MAIN-FILE" />
     </root>
 
 </configuration>
