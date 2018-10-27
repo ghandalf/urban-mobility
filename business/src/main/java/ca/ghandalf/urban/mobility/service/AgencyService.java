@@ -4,20 +4,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import ca.ghandalf.urban.mobility.domain.Agency;
 import ca.ghandalf.urban.mobility.dto.AgencyDTO;
 
 public interface AgencyService {
 
     public Optional<AgencyDTO> create(AgencyDTO dto);
     
-    public Optional<Agency> read(UUID id);
+    public Optional<AgencyDTO> read(UUID id);
     
-    public Optional<Agency> update(Agency entity);
+    public Optional<AgencyDTO> update(AgencyDTO dto);
     
-    public void delete(Agency entity);
+    public void delete(AgencyDTO dto);
     
-    public Optional<List<Agency>> findAll();
+    public Optional<List<AgencyDTO>> findAll();
     
-    public Optional<Agency> findByAgencyId(String agencyId);
+    public Optional<AgencyDTO> findByAgencyId(String agencyId);
 }

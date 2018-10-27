@@ -1,5 +1,6 @@
 package ca.ghandalf.urban.mobility.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,5 @@ import ca.ghandalf.urban.mobility.domain.Agency;
 @Repository
 public interface AgencyRepository extends JpaRepository<Agency, UUID> {
 
-	Agency findByAgencyId(String agencyId);
+	Optional<Agency> findByAgencyId(String agencyId);
 }
