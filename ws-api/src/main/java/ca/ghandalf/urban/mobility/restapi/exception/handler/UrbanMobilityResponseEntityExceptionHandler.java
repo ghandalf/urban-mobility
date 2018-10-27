@@ -24,9 +24,10 @@ import ca.ghandalf.urban.mobility.restapi.error.UrbanMobilityError;
 @RestControllerAdvice
 public class UrbanMobilityResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+	// FIXME improved this method to send an appropriated error to the customer
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<UrbanMobilityError> handleExceptions(Exception exception, WebRequest request) {
-		UrbanMobilityError currentError = new UrbanMobilityError(new Date(), exception.getMessage(), request.getDescription(false));
+		UrbanMobilityError currentError = new UrbanMobilityError(new Date(), exception.getMessage(), request.getDescription(true));
 		
 		return new ResponseEntity<>(currentError, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
