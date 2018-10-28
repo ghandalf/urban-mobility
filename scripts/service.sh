@@ -105,7 +105,7 @@ function serverCommand() {
 			echo -e "\n\t Webapps directoty:: `ls -la ${primary_application_server_deploy_to}/`"
 		  	;;
 		undeploy)
-			rm -rf ${primary_application_server_path}/logs/*
+			rm -rf ${primary_application_server_path}/log/*
 			if [ -f ${primary_application_server_deploy_to}/${application_name}.war ]; then
 				rm -rf ${primary_application_server_deploy_to}/${application_name}
 				rm -rf ${primary_application_server_deploy_to}/${application_name}.war
@@ -114,7 +114,7 @@ function serverCommand() {
 				rm -rf ${primary_application_server_path}/work/Catalina/localhost/${application_name}
 			fi
 			echo -e "\n\t Webapps directoty:: `ls -la ${primary_application_server_deploy_to}/`"
-			echo -e "\n\t Logs directory:: `ls -la ${primary_application_server_path}/logs/`"
+			echo -e "\n\t Log directory:: `ls -la ${primary_application_server_path}/log/`"
 			echo -e "\n\t Work directory:: `ls -la ${primary_application_server_path}/work/Catalina/localhost/`"
 			;;
 		start)
