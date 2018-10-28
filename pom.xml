@@ -27,6 +27,7 @@
 			need to make sure that the project compile in terminal and Eclipse -->
 		<spring.boot.version>2.1.0.RC1</spring.boot.version>
 		<spring.version>5.1.1.RELEASE</spring.version>
+		<spring.sleuth.version>2.0.2.RELEASE</spring.sleuth.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -115,8 +116,8 @@
 				<artifactId>postgresql</artifactId>
 				<version>42.2.5</version>
 			</dependency>
-			
-            <!-- handler dependencies -->
+
+			<!-- handler dependencies -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
@@ -142,8 +143,14 @@
 				<artifactId>spring-beans</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+			<!-- Not ready yet, use to expose distributed log for micro-services -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-sleuth</artifactId>
+				<version>${spring.sleuth.version}</version>
+			</dependency>
 
-            <!-- tests dependencies -->
+			<!-- tests dependencies -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
@@ -272,37 +279,15 @@
 					</reportSets>
 				</configuration>
 			</plugin>
-<!--
-@see: https://medium.com/spektrakel-blog/angular-in-the-enterprise-building-angular-apps-through-maven-3ca535152f85
-			<plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>update node and yarn</id>
-                        <goals>
-                            <goal>install-node-and-yarn</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                    </execution>
-                    <execution>
-                        <id>yarn install</id>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install frozen-lockfile non-interactive</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <nodeVersion>v10.10.0</nodeVersion>
-                    <yarnVersion>v1.10,1</yarnVersion>
-                </configuration>
-            </plugin>
--->
-            <!-- <plugin> -->
+			<!-- @see: https://medium.com/spektrakel-blog/angular-in-the-enterprise-building-angular-apps-through-maven-3ca535152f85 
+				<plugin> <groupId>com.github.eirslett</groupId> <artifactId>frontend-maven-plugin</artifactId> 
+				<version>1.6</version> <executions> <execution> <id>update node and yarn</id> 
+				<goals> <goal>install-node-and-yarn</goal> </goals> <phase>generate-resources</phase> 
+				</execution> <execution> <id>yarn install</id> <goals> <goal>yarn</goal> 
+				</goals> <configuration> <arguments>install frozen-lockfile non-interactive</arguments> 
+				</configuration> </execution> </executions> <configuration> <nodeVersion>v10.10.0</nodeVersion> 
+				<yarnVersion>v1.10,1</yarnVersion> </configuration> </plugin> -->
+			<!-- <plugin> -->
 			<!-- <groupId>org.apache.maven.plugins</groupId> -->
 			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
 			<!-- </plugin> -->
