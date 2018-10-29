@@ -27,6 +27,8 @@ import ca.ghandalf.urban.mobility.service.AgencyService;
 
 /**
  * 
+ * TODO Implement logstack: http://callistaenterprise.se/blogg/teknik/2017/09/13/building-microservices-part-8-logging-with-ELK/
+ * 
  * @author ghandalf
  *
  */
