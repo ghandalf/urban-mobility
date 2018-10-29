@@ -33,7 +33,7 @@
     <appender name="MAIN-FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOG_PATH}/${FILE_NAME_MAIN}.log</file>
         <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${COLOR_LOG_PATTERN}</pattern>
             <charset>UTF8</charset>
         </encoder>
     </appender>
@@ -41,7 +41,7 @@
     <appender name="HIBERNATE-FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOG_PATH}/${FILE_NAME_HIBERNATE}.log</file>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%file:%line] - %msg%n </pattern>
+            <pattern>${COLOR_LOG_PATTERN}</pattern>
             <charset>UTF8</charset>
         </encoder>
     </appender>
@@ -49,15 +49,15 @@
     <appender name="SPRING-FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOG_PATH}/${FILE_NAME_SPRING}.log</file>
         <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${COLOR_LOG_PATTERN}</pattern>
             <charset>UTF8</charset>
         </encoder>
     </appender>
 
     <appender name="ERROR-FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOG_PATH}/${FILE_NAME_ERROR}.log</file>
-        <encoder>fresche
-            <pattern>${LOG_PATTERN}</pattern>
+        <encoder>
+            <pattern>${COLOR_LOG_PATTERN}</pattern>
             <charset>UTF8</charset>
         </encoder>
     </appender>
@@ -72,7 +72,7 @@
                 <file>${LOG_PATH}/${FILE_NAME_APP}.${thread}.log</file>
                 <append>false</append>
                 <layout class="ch.qos.logback.classic.PatternLayout">
-                    <pattern>${LOG_PATTERN}</pattern>
+                    <pattern>${COLOR_LOG_PATTERN}</pattern>
                     <charset>UTF8</charset>
                 </layout>
             </appender>
