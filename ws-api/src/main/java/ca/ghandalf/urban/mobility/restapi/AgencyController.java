@@ -28,6 +28,8 @@ import ca.ghandalf.urban.mobility.service.AgencyService;
 /**
  * 
  * TODO Implement logstack: http://callistaenterprise.se/blogg/teknik/2017/09/13/building-microservices-part-8-logging-with-ELK/
+ * https://www.google.ca/search?ei=iAjXW82vCeGl_Qall6ywBw&q=microservice+centralized+logging+springframework&oq=microservice+centralized+logging+springframew&gs_l=psy-ab.1.0.33i21k1.298505.300986.0.303221.13.13.0.0.0.0.414.1310.3j5j4-1.9.0....0...1c.1.64.psy-ab..4.9.1305...0i22i30k1j33i22i29i30k1j33i10k1.0.aK-mvghNvsE
+ * 
  * 
  * @author ghandalf
  *
@@ -62,7 +64,8 @@ public class AgencyController {
 	 */
 	@GetMapping(path = "/agencies", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AgencyDTO>> findAll() {
-		List<AgencyDTO> result = service.findAll().isPresent() ? service.findAll().get() : null;
+
+		List<AgencyDTO> result = service.findAll().orElse(null);
 
 		if ( result != null ) {
 			return new ResponseEntity<>(result, HttpStatus.OK);
@@ -87,7 +90,7 @@ public class AgencyController {
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AgencyDTO> create(@RequestBody @Valid AgencyDTO dto) {
 		
-		AgencyDTO result = service.create(dto).isPresent() ? service.create(dto).get() : null;
+		AgencyDTO result = service.create(dto).orElse(null);
 		
 		if ( result != null ) {
 			return new ResponseEntity<>(result, HttpStatus.OK);
@@ -111,8 +114,8 @@ public class AgencyController {
 	@GetMapping(path = "/read", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AgencyDTO> read(@RequestParam(name = "id", required = true) UUID id) {
 		
-		AgencyDTO result = service.read(id).isPresent() ? service.read(id).get() : null;
-
+		AgencyDTO result = service.read(id).orElse(null);
+		
 		if (result != null) {
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
@@ -134,7 +137,8 @@ public class AgencyController {
 	 */
 	@PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AgencyDTO> update(@RequestBody @Valid AgencyDTO dto) {
-		AgencyDTO result = service.update(dto).isPresent() ? service.update(dto).get() : null;
+
+		AgencyDTO result = service.update(dto).orElse(null);
 		
 		if ( result != null ) {
 			return new ResponseEntity<>(result, HttpStatus.OK);
@@ -171,7 +175,7 @@ public class AgencyController {
 	public ResponseEntity<AgencyDTO> findByAgencyId(@RequestParam(name = "agencyId", required = true) String agencyId) {
 		logger.info("There we are in findByAgencyId calling for this current agencyId[{}]", agencyId);
 		
-		AgencyDTO result = service.findByAgencyId(agencyId).isPresent() ? service.findByAgencyId(agencyId).get() : null;
+		AgencyDTO result = service.findByAgencyId(agencyId).orElse(null);
 		
 		if ( result != null ) {
 			return new ResponseEntity<>(result, HttpStatus.OK);
