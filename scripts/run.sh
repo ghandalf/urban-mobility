@@ -11,6 +11,11 @@ ws=../urban-mobility/ws-api
 
 mvn clean install
 
+mvn enforcer:display-info
+
+# see: https://www.mojohaus.org/versions-maven-plugin/usage.html
+# mvn version:set
+
 cd ${ws}
 mvn spring-boot:run
 

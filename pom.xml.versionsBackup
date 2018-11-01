@@ -6,7 +6,7 @@
 
 	<groupId>ca.ghandalf.urban.mobility</groupId>
 	<artifactId>urban-mobility</artifactId>
-	<version>0.1.4</version>
+	<version>0.1.2</version>
 	<packaging>pom</packaging>
 
 	<name>urban-mobility</name>
@@ -180,7 +180,7 @@
 		<module>handler</module>
 		<module>business</module>
 		<module>ws-api</module>
-		<module>presentation</module>
+		<!-- <module>presentation</module> -->
 	</modules>
 
 	<build>
