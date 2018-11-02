@@ -10,18 +10,19 @@
 #			local.properties
 #		service.sh 
 #
-# author: Francis Ouellet
-# email: Ouellet.Francis@gmail.com
+# author: Ghandalf
+# email: ghandalf@ghandalf.ca
 # 
 ##
 
 types=("mvn" "srv" "docker" "project" "fast" "update" "generate" "get")
 currentDir=`pwd`
+scriptsDir=${currentDir}/scripts
 rootDir=../
 jsInputDir=src/main/webapp
 jsOutputDir=dist
 
-source ./env/colors.properties
+source ${scriptsDir}/env/colors.properties
 
 
 type=$1
@@ -33,10 +34,10 @@ function sourceOsEnvironnement() {
 	
 	case "${osType}" in
 		"Darwin" | "Linux")
-			source ./env/local.linux.properties;
+			source ${scriptsDir}/env/local.linux.properties;
 		;;
 		"MINGW64_NT-10.0")
-			source ./env/local.win.properties;
+			source ${scriptsDir}/env/local.win.properties;
 #			export CATALINA_HOME=${primary_application_server_path}
 		;;
 		*)
@@ -85,6 +86,11 @@ function mvnCommand() {
 		clean) mvn clean ;;
 		test) mvn test ;;
 		skiptest) mvn clean install -Dmaven.test.skip=true ;;
+		reports)
+			mvn versions:dependency-updates-report
+			mvn versions:plugin-updates-report
+			mvn versions:property-updates-report
+			;;
 		*) usage ;;	
 	esac
 	cd ${currentDir}
@@ -327,7 +333,7 @@ case $type in
 		serverCommand
 		command=deploy
 		serverCommand
-		command=start
+		command=startgmail.com
 		serverCommand
 		;;
 	update) updateSource ;;
