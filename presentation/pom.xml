@@ -6,33 +6,43 @@
 
 	<groupId>ca.ghandalf.urban.mobility</groupId>
 	<artifactId>presentation</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<name>presentation</name>
 	<description>Urban Mobility presentation uses for the client users.</description>
 
-    <parent>
-        <groupId>ca.ghandalf.urban.mobility</groupId>
-        <artifactId>urban-mobility</artifactId>
-        <version>0.1.4</version>
-    </parent>
+	<parent>
+		<groupId>ca.ghandalf.urban.mobility</groupId>
+		<artifactId>urban-mobility</artifactId>
+		<version>0.1.4</version>
+	</parent>
 
 	<properties>
 	</properties>
 
 	<build>
 		<plugins>
-<!--
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                npm run build
-                <configuration>
-                    <workingDirectory>presentation</workingDirectory>
-                    <installDirectory>target</installDirectory>
-                </configuration>
-            </plugin>
--->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<configuration>
+							<target>
+								<exec dir="${project.basedir}"
+									executable="npm"
+									failonerror="true">
+									<arg line="run build" />
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
