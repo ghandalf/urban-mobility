@@ -30,6 +30,12 @@ I also use this project for experimental uses.
 
 #### Set up
 
+Todo improve the Set up explanation it has to be easy with few step for Linux at least 
+1. Java Developement Toolkit
+2. Maven installation
+3. Docker installation wiht Postgresql
+
+
 You need to make sure you have the latest jdk install, take a look in the urban-mobility pom.xml, 
 to find out the current jdk in used.<br>
     `<java.version>jdk-11.0.1</java.version>`
