@@ -91,6 +91,18 @@ function mvnCommand() {
 			mvn versions:plugin-updates-report
 			mvn versions:property-updates-report
 			;;
+		enforcer)
+			mvn enforcer:display-info
+			;;
+		version)
+			# see: https://www.mojohaus.org/versions-maven-plugin/usage.html
+			mvn version:set
+			;;
+		run)
+			cd ws-api
+			mvn spring-boot:run
+			cd -
+			;;
 		*) usage ;;	
 	esac
 	cd ${currentDir}
