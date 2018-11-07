@@ -5,4 +5,15 @@ package ca.ghandalf.urban.mobility.grpc.domain;
 option java_package = "ca.ghandalf.urban.mobility.grpc.domain";
 option java_outer_classname = "Agency";
 
-message AgencyProto {}
+message AgencyProto {
+
+	string uuid = 1;
+	string agencyId = 2;
+	string name = 3;
+	string url = 4;
+	string timezone = 5;
+	string language = 6;
+	string phone = 7;
+	string fareUrl = 8;
+	string email = 9;	
+}
