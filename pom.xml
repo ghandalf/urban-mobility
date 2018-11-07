@@ -32,6 +32,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<grpc.version>1.16.1</grpc.version>
 		<!-- Due to Eclipse and M2E limitation when using maven -> Update Project. 
 			I have to use jdk 10 from Window -> Preferences -> Install JREs/Execution 
 			Environment -->
@@ -158,6 +159,23 @@
 				<version>${spring.sleuth.version}</version>
 			</dependency>
 
+			<!-- gRPC dependencies -->
+			<dependency>
+				<groupId>io.grpc</groupId>
+				<artifactId>grpc-netty</artifactId>
+				<version>${grpc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.grpc</groupId>
+				<artifactId>grpc-protobuf</artifactId>
+				<version>${grpc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.grpc</groupId>
+				<artifactId>grpc-stub</artifactId>
+				<version>${grpc.version}</version>
+			</dependency>
+
 			<!-- tests dependencies -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -179,7 +197,8 @@
 		<module>repository</module>
 		<module>handler</module>
 		<module>business</module>
-		<module>ws-api</module>
+		<!-- <module>ws-api</module> -->
+		<module>ws-grpc</module>
 		<module>presentation</module>
 	</modules>
 
@@ -293,7 +312,28 @@
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.8</version>
 				</plugin>
-
+				<plugin>
+					<groupId>org.xolstice.maven.plugins</groupId>
+					<artifactId>protobuf-maven-plugin</artifactId>
+					<version>0.5.0</version>
+					<configuration>
+						<protocArtifact>
+							com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
+						</protocArtifact>
+						<pluginId>grpc-java</pluginId>
+						<pluginArtifact>
+							io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+						</pluginArtifact>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>compile-custom</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 				<!-- <plugin> -->
 				<!-- <groupId>org.apache.maven.plugins</groupId> -->
 				<!-- <artifactId>maven-surefire-plugin</artifactId> -->
