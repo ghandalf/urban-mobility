@@ -17,23 +17,36 @@ function usage() {
 
 
 function start() {
-    echo -e "\n\tStarting containers $1";
+    echo -e "\n\tStarting containers";
 
-    case $1 in 
-        oracle)    
+	for i in "${images[@]}"; do
+    case $i in 
+        sath89/oracle-12c)    
             # see: https://hub.docker.com/r/sath89/oracle-12c/
             # Oracle created for Fresche Solutions
             # -d will start the container in detached mode
             # -p dedicated ports 8080 will be used by http://localhost:8080/apex tools and 1521 by databases sqlplus command line or tools
             # Login on http://localhost:8080/apex asked for user: admin and new password::Ghandalf+12
-            docker run -d -p 8080:8080 -p 1521:1521 --name docker-oracle -v /data/app/db/OracleDataDocker/oracle:/u01/app/oracle sath89/oracle-12c
-            echo -e "\n\t Oracle started\n";
+            # docker run -d -p 8080:8080 -p 1521:1521 --name docker-oracle -v /data/app/db/OracleDataDocker/oracle:/u01/app/oracle sath89/oracle-12c
+            docker run -d -p 8080:8080 -p 1521:1521 --name docker-oracle -v ${oracle12_data}:/u01/app/oracle $i
+            echo -e "\n\t Oracle 12 started\n";
+            ;;
+        dockerhelp/docker-oracle-ee-18c)    
+            # see: https://hub.docker.com/r/sath89/oracle-12c/
+            # Oracle created for Fresche Solutions
+            # -d will start the container in detached mode
+            # -p dedicated ports 8080 will be used by http://localhost:8080/apex tools and 1521 by databases sqlplus command line or tools
+            # Login on http://localhost:8080/apex asked for user: admin and new password::Ghandalf+12
+            # docker run -d -p 8080:8080 -p 1521:1521 --name docker-oracle -v /data/app/db/OracleDataDocker/oracle:/u01/app/oracle sath89/oracle-12c
+            docker run -d -p 8090:8090 -p 1523:1523 --name docker-oracle18 -v ${oracle18_data}:/u01/app/oracle18 $i
+            echo -e "\n\t Oracle 18 started\n";
             ;;
         postgres)
             # see: https://hub.docker.com/r/library/postgres/
             #docker run -d -p 5432:5432 --name docker-postgres -v /data/app/db/PostgreSQLDataDocker/postgresql -e POSTGRES_PASSWORD=postgres postgres
             #docker run -d -p 5432:5432 --name docker-postgres -v postgresql-data:/data/app/db/PostgreSQLDataDocker/postgresql -e POSTGRES_DB=UrbanMobility -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
-            docker start 0a3e218c1b36
+            docker run -d -p 5432:5432 --name docker-postgres -v ${postgres_data}:/u01/app/postgres -e POSTGRES_DB=UrbanMobility -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres $i
+            #docker start 0a3e218c1b36
             echo -e "\n\t PostgreSQL started\n";
             # Connect directly on command line to postgresql
             # docker run -it --rm --link docker-postgres:postgres postgres psql -h postgres -U postgres
@@ -49,13 +62,15 @@ function start() {
             ;;
         redis)
             # see: https://hub.docker.com/_/redis/
-            docker run -d -p 6379:6379 --name docker-redis -v /data/app/db/RedisDataDocker/redis:/u01/app/redis redis
+            #docker run -d -p 6379:6379 --name docker-redis -v /data/app/db/RedisDataDocker/redis:/u01/app/redis redis
+            docker run -d -p 6379:6379 --name docker-redis -v ${redis_data}:/u01/app/redis $i
             echo -e "\n\t Redis started\n";
             ;;
         *)
             echo -e "\n\t Please provide a container: <oracle|postgres|redis> \n";
             ;;
-    esac
+    esac  
+    done
 }
 
 function show() {
@@ -64,6 +79,14 @@ function show() {
     echo -e "\n\tDocker running";
     docker ps 
     echo -e "\n";
+}
+
+function startImages() {
+	length="${#imagesId[@]}";
+	for (( i=0; i<$length; i++)); do
+		docker start "${imagesId[$i]}"
+		#echo -e "${imagesId[$i]}"
+	done
 }
 
 function stop() {
@@ -120,10 +143,12 @@ function insertData() {
 	psql -h localhost -p 5432 -d UrbanMobility -f ./scripts/postgresql/InsertData.sql -U postgres
 }
 
-
 # password: postgres
 function db() { 
 	case $1 in 
+		pull)
+			pull
+			;;
 		create)
 			createTables;
 			;;
@@ -142,7 +167,34 @@ function db() {
 	esac
 }
 
+function loadResources() {
+	echo -e "\n\t\t $0 load resources...";
+	if [ -f `pwd`/scripts/docker/container/docker.properties ]; then
+		source `pwd`/scripts/docker/container/docker.properties;
+	else
+		echo -e "\n\t\tYou need to provide the file docker.properties under container directory...";
+	fi
+}
+
+
+function pull() {
+	for i in "${images[@]}"; do
+		echo "$i"
+		docker pull $i;
+	done
+}
+
+
+function finish() { 
+	echo -e "\n\t\tUse to clean resources before we live\n";
+}
+trap finish EXIT;
+
+loadResources;
 case ${command} in
+	pull)
+		pull;
+		;;
     clean)
         cleanUp;
         ;;
@@ -152,6 +204,9 @@ case ${command} in
     start)
         start $2;
         ;;
+    startImages)
+    	startImages;
+    	;;
     show)
         show;
         ;;
