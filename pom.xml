@@ -25,7 +25,7 @@
 			https://repo.spring.io/milestone/org/springframework/spring-context/ mvn 
 			versions:display-dependency-updates Will give you some other updates, we 
 			need to make sure that the project compile in terminal and Eclipse -->
-		<spring.boot.version>2.1.0.RC1</spring.boot.version>
+		<spring.boot.version>2.1.0.RELEASE</spring.boot.version>
 		<spring.version>5.1.1.RELEASE</spring.version>
 		<spring.sleuth.version>2.0.2.RELEASE</spring.sleuth.version>
 
@@ -152,6 +152,12 @@
 				<artifactId>spring-beans</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-actuator</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
 			<!-- Not ready yet, use to expose distributed log for micro-services -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -197,7 +203,7 @@
 		<module>repository</module>
 		<module>handler</module>
 		<module>business</module>
-		<!-- <module>ws-api</module> -->
+		<module>ws-api</module>
 		<module>ws-grpc</module>
 		<module>presentation</module>
 	</modules>
