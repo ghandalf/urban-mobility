@@ -73,6 +73,7 @@ function start() {
     done
 }
 
+
 function show() {
     echo -e "\n\tDocker container installed";
     docker images
@@ -103,6 +104,7 @@ function cleanUp() {
     docker volume ls
     
     echo -e "\n\t Remove background running containers\n"
+    docker stop $(docker ps -aq)
     docker rm $(docker ps -aq)
     echo -e "\n\t Containers removed \n"
     docker ps -a
@@ -184,6 +186,36 @@ function pull() {
 	done
 }
 
+function pullAnalytic() {
+	for i in "${imagesAnalytic[@]]}"; do
+		docker pull $i;
+	done
+}
+
+###
+# Before we start analytics container we need to create a docker network
+# https://stackoverflow.com/questions/40373400/docker-compose-yml-for-elasticsearch-and-kibana
+##
+function startAnalytic() {
+	# Create the network for communication in between containers
+	#docker network create analytic-net --driver=bridge
+	
+	for i in "${imagesAnalytic[@]]}"; do
+		currentName=`echo $i | awk -F'/' {'printf $3'} | awk -F':' {'printf $1'}`
+
+		case $currentName in
+			elasticsearch)
+				docker run --name $currentName -p 9200:9200 -p 9300:9300 -d --network analytic-net $i
+				#docker run --name elasticsearch -p 9200:9200 -p 9300:9300 -d --network analytic-net docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+				;;
+			kibana)
+				docker run --name $currentName -p 5601:5601 -d --network analytic-net $i 
+				;;
+		esac
+		echo -e "\n\t $currentName started\n";
+	done
+}
+
 
 function finish() { 
 	echo -e "\n\t\tUse to clean resources before we live\n";
@@ -194,6 +226,12 @@ loadResources;
 case ${command} in
 	pull)
 		pull;
+		;;
+	pullAnalytic)
+		pullAnalytic;
+		;;
+	startAnalytic)
+		startAnalytic;
 		;;
     clean)
         cleanUp;
