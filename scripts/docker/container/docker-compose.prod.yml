@@ -21,9 +21,15 @@ services:
          - "9200:9200"
          - "9300:9300"
       restart: always
-
+      volumes: 
+        - type: volume
+          source: elastic-data
+          target: /data/server/analytic/elasticsearch
+          
    kibana:
       container_name: kibana
+      depends_on:
+         - elasticsearch
       deploy:
          replicas: 2
          update_config:
@@ -31,14 +37,21 @@ services:
             delay: 10s
          restart_policy:
             condition: on_failure
+      environment: 
+        - ELASTICSEARCH_URL=http://localhost:9200
       image: docker.elastic.co/kibana/kibana:6.4.3
-      ports:
-         - "5601:5601"
+      labels:
+        ca.ghandalf.service: "kibana"
+        ca.ghandalf.description: "Data presentation and logs aggregation"
       networks:
          - analytic_net
-      depends_on:
-         - elasticsearch
+      ports:
+         - "5601:5601"
       restart: always
 
 networks:
    analytic_net: 
+
+volumes:
+  elastic-data:
+    driver: local
