@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+   
+   elasticsearch:
+      container_name: elasticsearch
+      deploy:
+         replicas: 2
+         update_config:
+            parallelism: 2
+            delay: 10s
+         restart_policy:
+            condition: on_failure
+      image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+      labels:
+        ca.ghandalf.service: "elasticsearch"
+        ca.ghandalf.description: "For searching and indexing data"
+      networks:
+         - analytic_net
+      ports:
+         - "9200:9200"
+         - "9300:9300"
+      restart: always
+
+   kibana:
+      container_name: kibana
+      deploy:
+         replicas: 2
+         update_config:
+            parallelism: 2
+            delay: 10s
+         restart_policy:
+            condition: on_failure
+      image: docker.elastic.co/kibana/kibana:6.4.3
+      ports:
+         - "5601:5601"
+      networks:
+         - analytic_net
+      depends_on:
+         - elasticsearch
+      restart: always
+
+networks:
+   analytic_net: 
