@@ -12,16 +12,18 @@ services:
          - analytic_net
       ports:
          - "9200:9200"
-      restart: always
       volumes: 
         - type: volume
           source: elastic-data
           target: /data/server/analytic/elasticsearch
+      restart: always
 
    kibana:
       container_name: kibana
       depends_on:
         - elasticsearch
+      environment: 
+        - ELASTICSEARCH_URL=http://es:9200
       image: docker.elastic.co/kibana/kibana:6.4.3
       labels:
         ca.ghandalf.service: "kibana"
