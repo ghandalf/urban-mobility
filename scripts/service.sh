@@ -329,6 +329,12 @@ function get() {
 	cd ${currentDir}		
 }
 
+function buildImage() {
+	cd ${rootDir}
+	docker build -t urban-mobility:0.1.4 .
+	cd ${currentDir}
+}
+
 SUCCESS=
 sourceOsEnvironnement
 inputValidation $type
@@ -351,6 +357,7 @@ case $type in
 	update) updateSource ;;
 	generate) generateJavafromProto ;;
 	get) get ;;
+	buildImage) buildImage ;;
 	*) usage ;;
 esac
 	
