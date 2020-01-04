@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF8"?>
+
+<toolchains>
+
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <id>jdk-10.0.2</id>
+      <version>jdk-10.0.2</version>
+      <vendor>oracle</vendor>
+    </provides>
+    <configuration>
+      <jdkHome>/c/Users/Ouell/usr/local/programs/java/jdk-10.0.2</jdkHome>
+    </configuration>
+  </toolchain>
+
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <id>jdk-11.0.1</id>
+      <version>jdk-11.0.1</version>
+      <vendor>oracle</vendor>
+    </provides>
+    <configuration>
+      <jdkHome>/data/links/jdk</jdkHome>
+    </configuration>
+  </toolchain>
+
+</toolchains>

@@ -1,4 +1,4 @@
-package ca.ghandalf.urban.mobility.handler;
+package ca.ghandalf.urban.mobility.handler.montreal;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;

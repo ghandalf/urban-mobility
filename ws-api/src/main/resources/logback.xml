@@ -79,15 +79,15 @@
         </sift>
     </appender>
 
-    <logger name="org.spring" level="debug">
+    <logger name="org.spring" level="info">
         <appender-ref ref="SPRING-FILE" />
     </logger>
 
-    <logger name="org.springframework" level="debug">
+    <logger name="org.springframework" level="info">
         <appender-ref ref="SPRING-FILE" />
     </logger>
 
-    <logger name="org.hibernate" level="debug">
+    <logger name="org.hibernate" level="info">
         <appender-ref ref="HIBERNATE-FILE" />
     </logger>
     
