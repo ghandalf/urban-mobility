@@ -6,7 +6,7 @@
 
 	<groupId>ca.ghandalf.urban.mobility</groupId>
 	<artifactId>urban-mobility</artifactId>
-	<version>0.1.4</version>
+	<version>0.1.6</version>
 	<packaging>pom</packaging>
 
 	<name>urban-mobility</name>
@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.0.RELEASE</version>
+		<version>2.2.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -25,20 +25,42 @@
 			https://repo.spring.io/milestone/org/springframework/spring-context/ mvn 
 			versions:display-dependency-updates Will give you some other updates, we 
 			need to make sure that the project compile in terminal and Eclipse -->
-		<spring.boot.version>2.1.0.RELEASE</spring.boot.version>
-		<spring.version>5.1.1.RELEASE</spring.version>
-		<spring.sleuth.version>2.0.2.RELEASE</spring.sleuth.version>
+		<!-- <spring.boot.version>2.1.0.RELEASE</spring.boot.version> -->
+		<!-- <spring.version>5.1.1.RELEASE</spring.version> -->
+		<!-- <spring.sleuth.version>2.0.2.RELEASE</spring.sleuth.version> -->
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<grpc.version>1.16.1</grpc.version>
+		<grpc.version>1.26.0</grpc.version>
 		<!-- Due to Eclipse and M2E limitation when using maven -> Update Project. 
 			I have to use jdk 10 from Window -> Preferences -> Install JREs/Execution 
 			Environment -->
-		<java.version>jdk-10.0.2</java.version>
-		<maven.compiler.source>10</maven.compiler.source>
-		<maven.compiler.target>10</maven.compiler.target>
+		<java.version>jdk-13.0.1</java.version>
+		<maven.compiler.source>13</maven.compiler.source>
+		<maven.compiler.target>13</maven.compiler.target>
+		<maven.minimal.version>3.6.0</maven.minimal.version>
+
+		<mvn.ant.version>1.8</mvn.ant.version>
+		<mvn.assembly.version>3.2.0</mvn.assembly.version>
+		<mvn.compiler.version>3.8.1</mvn.compiler.version>
+		<mvn.deploy.version>3.0.0-M1</mvn.deploy.version>
+		<mvn.enforcer.version>3.0.0-M3</mvn.enforcer.version>
+		<mvn.failsafe.version>3.0.0-M4</mvn.failsafe.version>
+		<mvn.install.version>3.0.0-M1</mvn.install.version>
+		<mvn.jar.version>3.2.0</mvn.jar.version>
+		<mvn.jdeps.version>3.1.2</mvn.jdeps.version>
+		<mvn.release.version>3.0.0-M1</mvn.release.version>
+		<mvn.source.version>3.2.1</mvn.source.version>
+		<mvn.surefire.version>3.0.0-M4</mvn.surefire.version>
+		<mvn.toolchains.version>3.0.0</mvn.toolchains.version>
+
+		<mvn.codehaus.version>2.7</mvn.codehaus.version>
+		<mvn.flyway.version>6.1.3</mvn.flyway.version>
+		<mvn.infinispan.version>10.0.0.Beta3</mvn.infinispan.version>
+		<mvn.git.commit.version>4.0.0</mvn.git.commit.version>
+
+		<mvn.protobuf.version>0.6.1</mvn.protobuf.version>
 	</properties>
 
 	<repositories>
@@ -106,11 +128,11 @@
 			</dependency>
 
 			<!-- repository dependencies -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-data-jpa</artifactId>
-				<version>${spring.boot.version}</version>
-			</dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework.boot</groupId> -->
+			<!-- <artifactId>spring-boot-starter-data-jpa</artifactId> -->
+			<!-- <version>${spring.boot.version}</version> -->
+			<!-- </dependency> -->
 			<dependency>
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-core</artifactId>
@@ -123,47 +145,47 @@
 			</dependency>
 
 			<!-- handler dependencies -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework</groupId> -->
+			<!-- <artifactId>spring-context</artifactId> -->
+			<!-- <version>${spring.version}</version> -->
+			<!-- </dependency> -->
 
 			<!-- business dependencies -->
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-crypto</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework.security</groupId> -->
+			<!-- <artifactId>spring-security-crypto</artifactId> -->
+			<!-- <version>${spring.version}</version> -->
+			<!-- </dependency> -->
 
 			<!-- ws-api -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-web</artifactId>
-				<version>${spring.boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-tx</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-beans</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework.boot</groupId> -->
+			<!-- <artifactId>spring-boot-starter-web</artifactId> -->
+			<!-- <version>${spring.boot.version}</version> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework</groupId> -->
+			<!-- <artifactId>spring-tx</artifactId> -->
+			<!-- <version>${spring.version}</version> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework</groupId> -->
+			<!-- <artifactId>spring-beans</artifactId> -->
+			<!-- <version>${spring.version}</version> -->
+			<!-- </dependency> -->
 
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-actuator</artifactId>
-				<version>${spring.boot.version}</version>
-			</dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework.boot</groupId> -->
+			<!-- <artifactId>spring-boot-starter-actuator</artifactId> -->
+			<!-- <version>${spring.boot.version}</version> -->
+			<!-- </dependency> -->
 			<!-- Not ready yet, use to expose distributed log for micro-services -->
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-sleuth</artifactId>
-				<version>${spring.sleuth.version}</version>
-			</dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework.cloud</groupId> -->
+			<!-- <artifactId>spring-cloud-starter-sleuth</artifactId> -->
+			<!-- <version>${spring.sleuth.version}</version> -->
+			<!-- </dependency> -->
 
 			<!-- gRPC dependencies -->
 			<dependency>
@@ -183,12 +205,34 @@
 			</dependency>
 
 			<!-- tests dependencies -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.springframework.boot</groupId> -->
+			<!-- <artifactId>spring-boot-starter-test</artifactId> -->
+			<!-- <version>${spring.boot.version}</version> -->
+			<!-- <scope>test</scope> -->
+			<!-- </dependency> -->
 			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-test</artifactId>
-				<version>${spring.boot.version}</version>
-				<scope>test</scope>
+				<groupId>io.github.bonigarcia</groupId>
+				<artifactId>webdrivermanager</artifactId>
+				<version>3.7.1</version>
 			</dependency>
+			<dependency>
+				<!-- Content selenium-java net.bytebuddy -->
+				<groupId>net.serenity-bdd</groupId>
+				<artifactId>serenity-core</artifactId>
+				<version>2.0.90</version>
+			</dependency>
+			<dependency>
+				<groupId>net.serenity-bdd</groupId>
+				<artifactId>serenity-junit</artifactId>
+				<version>2.0.90</version>
+			</dependency>
+			<dependency>
+				<groupId>net.serenity-bdd.maven.plugins</groupId>
+				<artifactId>serenity-maven-plugin</artifactId>
+				<version>2.0.89</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
@@ -209,42 +253,36 @@
 	</modules>
 
 	<build>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>${mvn.ant.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${mvn.assembly.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${mvn.compiler.version}</version>
 					<configuration>
 						<source>${maven.compiler.source}</source>
 						<target>${maven.compiler.target}</target>
 					</configuration>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>1.1</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>toolchain</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<toolchains>
-							<jdk>
-								<version>jdk-11.0.1</version>
-								<vendor>oracle</vendor>
-							</jdk>
-						</toolchains>
-					</configuration>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${mvn.deploy.version}</version>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>${mvn.enforcer.version}</version>
 					<executions>
 						<execution>
 							<id>enforce-maven</id>
@@ -262,8 +300,8 @@
 											(http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
 									</bannedPlugins>
 									<requireMavenVersion>
-										<!-- To bad embedded maven in eclipse is 3.5.3 version -->
-										<version>[3.5.3,)</version>
+										<!-- Due to embedded maven in eclipse is 3.5.3 version -->
+										<version>[${maven.minimal.version},)</version>
 									</requireMavenVersion>
 									<requireJavaVersion>
 										<version>${maven.compiler.source}</version>
@@ -273,32 +311,25 @@
 						</execution>
 					</executions>
 				</plugin>
-
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>dependency-updates-report</report>
-									<report>plugin-updates-report</report>
-									<report>property-updates-report</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</configuration>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>${mvn.install.version}</version>
 				</plugin>
-
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${mvn.failsafe.version}</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
+					<version>${mvn.jar.version}</version>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jdeps-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>${mvn.jdeps.version}</version>
 					<executions>
 						<execution>
 							<goals>
@@ -312,16 +343,55 @@
 					<configuration>
 					</configuration>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.8</version>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${mvn.release.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${mvn.source.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${mvn.surefire.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>${mvn.toolchains.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>toolchain</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<toolchains>
+							<jdk>
+								<version>jdk-11.0.1</version>
+								<vendor>oracle</vendor>
+							</jdk>
+						</toolchains>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.flywaydb</groupId>
+					<artifactId>flyway-maven-plugin</artifactId>
+					<version>${mvn.flyway.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.infinispan</groupId>
+					<artifactId>infinispan-protocol-parser-generator-maven-plugin</artifactId>
+					<version>${mvn.infinispan.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.xolstice.maven.plugins</groupId>
 					<artifactId>protobuf-maven-plugin</artifactId>
-					<version>0.5.0</version>
+					<version>${mvn.protobuf.version}</version>
 					<configuration>
 						<protocArtifact>
 							com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
@@ -340,29 +410,36 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!-- <plugin> -->
-				<!-- <groupId>org.apache.maven.plugins</groupId> -->
-				<!-- <artifactId>maven-surefire-plugin</artifactId> -->
-				<!-- <version>2.22.0</version> -->
-				<!-- <configuration> -->
-				<!-- <argLine>illegal-access=permit</argLine> -->
-				<!-- </configuration> -->
-				<!-- </plugin> -->
-				<!-- <plugin> -->
-				<!-- <groupId>org.apache.maven.plugins</groupId> -->
-				<!-- <artifactId>maven-failsafe-plugin</artifactId> -->
-				<!-- <version>2.22.0</version> -->
-				<!-- <configuration> -->
-				<!-- <argLine> -->
-				<!-- illegal-access=permit -->
-				<!-- </argLine> -->
-				<!-- </configuration> -->
-				<!-- </plugin> -->
-
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${mvn.codehaus.version}</version>
+					<configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>dependency-updates-report</report>
+									<report>plugin-updates-report</report>
+									<report>property-updates-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>pl.project13.maven</groupId>
+					<artifactId>git-commit-id-plugin</artifactId>
+					<version>${mvn.git.commit.version}</version>
+				</plugin>
 			</plugins>
+
 		</pluginManagement>
 
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
@@ -371,23 +448,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 			</plugin>
-
-			<!-- @see: https://medium.com/spektrakel-blog/angular-in-the-enterprise-building-angular-apps-through-maven-3ca535152f85 
-				<plugin> <groupId>com.github.eirslett</groupId> <artifactId>frontend-maven-plugin</artifactId> 
-				<version>1.6</version> <executions> <execution> <id>update node and yarn</id> 
-				<goals> <goal>install-node-and-yarn</goal> </goals> <phase>generate-resources</phase> 
-				</execution> <execution> <id>yarn install</id> <goals> <goal>yarn</goal> 
-				</goals> <configuration> <arguments>install frozen-lockfile non-interactive</arguments> 
-				</configuration> </execution> </executions> <configuration> <nodeVersion>v10.10.0</nodeVersion> 
-				<yarnVersion>v1.10,1</yarnVersion> </configuration> </plugin> -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.maven.plugins</groupId> -->
-			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
-			<!-- </plugin> -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.maven.plugins</groupId> -->
-			<!-- <artifactId>maven-failsafe-plugin</artifactId> -->
-			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>

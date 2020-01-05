@@ -16,7 +16,7 @@
 ##
 
 types=("mvn" "srv" "docker" "project" "fast" "update" "generate" "get")
-currentDir=`pwd`
+currentDir=$(pwd);
 scriptsDir=${currentDir}/scripts
 rootDir=../
 jsInputDir=src/main/webapp
