@@ -83,6 +83,16 @@ function stearDownDocker() {
     echo -e "${tab}${Green}Shutdown postgres container ${Yellow}done${Color_Off}${nl}";
 }
 
+# This function must be called after setUpDocker
+function setUpDatabases() { 
+#	driver: org.postgresql.Driver
+#	url: jdbc:postgresql://localhost:5432/UrbanMobility
+#	username: urbanadmin
+#	password: Urb@n@dm!n
+
+
+}
+
 ###
 # This function will manage, compile, clean, install relate to maven process 
 ##
