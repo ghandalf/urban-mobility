@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ###
 # Make sure that we call an existing value in the list provided
 ##

@@ -10,6 +10,7 @@ libs_dir="scripts/libs";
 
 commands=("run" "mvn" "srv" "docker" "project" "fast" "update" "generate" "get");
 mvn_actions=("c" "ci" "e" "p" "rp" "r" "t" "v" "va");
+docker_actions=("b" "-b" "build");
 command=$1;
 module=$2;
 
@@ -23,6 +24,10 @@ function loadLibraries() {
 	for file in ${libs_dir}/*; do
 		source ${file};
 	done
+}
+
+function loadDockerEnv() { 
+    source .env;
 }
 
 function inputValidation() {
@@ -73,6 +78,10 @@ function setUpDocker() {
     	sudo service docker start; 
     fi
     docker-compose -f docker-compose.yml up -d;
+    # sudo ls -la /var/lib/docker/
+    # /var/lib/postgresql/data
+    #psql -h localhost -p 5432 -U postgres --password ; # gh@nd@lf!
+    
     echo -e "${tab}${Green}Starting postgres container ${Yellow}done${Color_Off}${nl}";
 }
 
@@ -91,6 +100,11 @@ function maven() {
 	local class=$2; # Could be classTest or ClassTest#functionToTest
 	local new_version=${class}; # Use the same parameter
 	
+	if [[ ${#action} -eq 0 ]]; then
+        echo -e "${n1t}${Red}You must provide the action from this list [${Cyan}${mvn_actions[@]}${Red}].${Color_Off}";
+        usage;
+        exit 12;
+    fi
 	result=$(isInList ${action} "${mvn_actions[@]}"); 
 	if [[ ! $? -eq 0 ]] ; then
 		echo -e "${n1t}${Red}The action [${Cyan}${action}${Red}] [${Cyan}${mvn_actions[@]}${Red}]${Color_Off}";
@@ -130,6 +144,40 @@ function maven() {
 	echo -e "${n1t}${Yellow}Maven execution ${Green}done.${Color_Off}";
 }
 
+function dockerManagement() {
+    local action=$1;
+    local prefix=$2;
+    local container=$3;
+    
+    if [[ ${#action} -eq 0 ]]; then
+        echo -e "${n1t}${Red}You must provide the action from this list [${Cyan}${docker_actions[@]}${Red}].${Color_Off}";
+        usage;
+        exit 12;
+    fi
+    result=$(isInList ${action} "${docker_actions[@]}"); 
+    if [[ ! $? -eq 0 ]] ; then
+        echo -e "${n1t}${Red}The action [${Cyan}${action}${Red}] [${Cyan}${docker_actions[@]}${Red}]${Color_Off}";
+        usage;
+        exit 12;
+    fi
+    if [[ ${#prefix} -eq 0 ]]; then
+        echo -e "${n1t}${Red}You must provide the prefix use to build the container.${Color_Off}";
+        usage;
+        exit 12;
+    fi
+    if [[ ${#container} -eq 0 ]]; then
+        echo -e "${n1t}${Red}You must provide the container to work with.${Color_Off}";
+        usage;
+        exit 12;
+    fi
+    
+    echo -e "${n1t}${Yellow}Docker execution of [${Cyan}${action}${Yellow}].${Color_Off}";
+    
+    case ${action} in
+        -b|b|build)      build ${prefix} ${container}; ;;
+    esac
+    echo -e "${n1t}${Yellow}Docker execution ${Green}done.${Color_Off}";
+}
 
 function generate() {
 
@@ -206,12 +254,16 @@ function usage() {
 
 loadResources;
 loadLibraries;
+loadDockerEnv;
 inputValidation ${command};
 setUp;
 case ${command} in
 	mvn)
 		action=$2; class=$3;
 		maven ${action} ${class}; ;;
+	docker)
+	   action=$2; prefix=$3; container=$4;
+	   dockerManagement ${action} ${prefix} ${container}; ;;
 #    build)
 #        mvn clean install -DskipTests; 
 #        ;;

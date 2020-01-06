@@ -5,13 +5,13 @@ services:
    postgres:
      image: postgres
      container_name: postgres
-     hostname: postgres.ghanda.ca
+     hostname: postgres.ghandalf.ca
      ports: ['5432:5432']
      restart: always
      environment:
         POSTGRES_PASSWORD: gh@nd@lf!
      volumes:
-      - postgres-data:/data/server/db/postgresql:rw
+      - postgres-data:/var/lib/postgresql/data:rw
      networks: ['ghandalf.ca']
 
    adminer:
