@@ -8,9 +8,9 @@ jdk_path_file="${links_dir}/jdk.original.link";
 resources_dir="scripts/resources";
 libs_dir="scripts/libs";
 
-commands=("run" "mvn" "srv" "docker" "project" "fast" "update" "generate" "get");
+commands=("mvn" "docker"); # "run" "srv"  "project" "fast" "update" "generate" "get"
 mvn_actions=("c" "ci" "e" "p" "rp" "r" "t" "v" "va");
-docker_actions=("b" "-b" "build");
+docker_actions=("build" "start" "stop");
 command=$1;
 module=$2;
 
@@ -95,7 +95,7 @@ function stearDownDocker() {
 ###
 # This function will manage, compile, clean, install relate to maven process 
 ##
-function maven() {
+function mavenManagement() {
 	local action=$1;
 	local class=$2; # Could be classTest or ClassTest#functionToTest
 	local new_version=${class}; # Use the same parameter
@@ -160,21 +160,24 @@ function dockerManagement() {
         usage;
         exit 12;
     fi
-    if [[ ${#prefix} -eq 0 ]]; then
-        echo -e "${n1t}${Red}You must provide the prefix use to build the container.${Color_Off}";
-        usage;
-        exit 12;
-    fi
-    if [[ ${#container} -eq 0 ]]; then
-        echo -e "${n1t}${Red}You must provide the container to work with.${Color_Off}";
-        usage;
-        exit 12;
-    fi
     
     echo -e "${n1t}${Yellow}Docker execution of [${Cyan}${action}${Yellow}].${Color_Off}";
     
     case ${action} in
-        -b|b|build)      build ${prefix} ${container}; ;;
+        build)  
+            if [[ ${#prefix} -eq 0 ]]; then
+                echo -e "${n1t}${Red}You must provide the prefix use to build the container.${Color_Off}";
+                usage;
+                exit 12;
+            fi
+            if [[ ${#container} -eq 0 ]]; then
+                echo -e "${n1t}${Red}You must provide the container to work with.${Color_Off}";
+                usage;
+                exit 12;
+            fi
+            build ${prefix} ${container}; ;;
+        start)  docker-compose -f docker-compose.yml up -d; ;;
+        stop)   docker-compose -f docker-compose.yml down; ;;
     esac
     echo -e "${n1t}${Yellow}Docker execution ${Green}done.${Color_Off}";
 }
@@ -246,9 +249,12 @@ function run() {
 }
 
 function usage() {
-    echo -e "\n";
-    echo -e "\t\t$0 command=<build|gen|show> project=<domain|repository|handler|service|rest>";
-    echo -e "\n";
+    echo -e "${n1t}usage";
+    echo -e "${tab}$0${Yellow} <${Cyan}command${Yellow}> <${Cyan}action${Yellow}> <${Cyan}class${Yellow}|${Cyan}prefix${Yellow}>${Color_Off}";
+    echo -e "${tabs2}where ${Yellow}<${Cyan}command${Yellow}> must be in this group [${Cyan}${commands[@]}${Yellow}]${Color_Off}";
+    echo -e "${tabs2}${Yellow}whith the command <${Cyan}mvn${Yellow}> uses those parameters [${Cyan}${mvn_actions[@]}${Yellow}]${Color_Off}";
+    echo -e "${tabs2}${Yellow}whith the command <${Cyan}docker${Yellow}> uses those parameters [${Cyan}${docker_actions[@]}${Yellow}]${Color_Off}";
+    echo -e "${nl}";
     tearDown;
 }
 
@@ -260,7 +266,7 @@ setUp;
 case ${command} in
 	mvn)
 		action=$2; class=$3;
-		maven ${action} ${class}; ;;
+		mavenManagement ${action} ${class}; ;;
 	docker)
 	   action=$2; prefix=$3; container=$4;
 	   dockerManagement ${action} ${prefix} ${container}; ;;
