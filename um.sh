@@ -8,9 +8,11 @@ jdk_path_file="${links_dir}/jdk.original.link";
 resources_dir="scripts/resources";
 libs_dir="scripts/libs";
 
-commands=("mvn" "docker"); # "run" "srv"  "project" "fast" "update" "generate" "get"
+commands=("mvn" "docker" "test"); # "run" "srv"  "project" "fast" "update" "generate" "get"
 mvn_actions=("c" "ci" "e" "p" "rp" "r" "t" "v" "va");
-docker_actions=("build" "start" "stop");
+docker_actions=("build" "start" "stop" "connect" "clean");
+containers=("postgres")
+prefixes=("ghandalf");
 command=$1;
 module=$2;
 
@@ -146,9 +148,13 @@ function mavenManagement() {
 
 function dockerManagement() {
     local action=$1;
-    local prefix=$2;
-    local container=$3;
-    
+    local container=$2;
+    local prefix=$3;
+    local isRootUser=$3; # true|false
+    local from=$3;
+    local to=$4
+
+    # echo -e "dockerManagement 1 action=${action},container=${container},  prefix=${prefix}, isRootUser=${isRootUser}"
     if [[ ${#action} -eq 0 ]]; then
         echo -e "${n1t}${Red}You must provide the action from this list [${Cyan}${docker_actions[@]}${Red}].${Color_Off}";
         usage;
@@ -156,30 +162,76 @@ function dockerManagement() {
     fi
     result=$(isInList ${action} "${docker_actions[@]}"); 
     if [[ ! $? -eq 0 ]] ; then
-        echo -e "${n1t}${Red}The action [${Cyan}${action}${Red}] [${Cyan}${docker_actions[@]}${Red}]${Color_Off}";
+        echo -e "${n1t}${Red}The action [${Cyan}${action}${Red}] must be from this list [${Cyan}${docker_actions[@]}${Red}]${Color_Off}";
         usage;
         exit 12;
     fi
+
+    # validation
+    case ${action} in
+        connect|build) 
+            if [[ ${#container} -eq 0 ]]; then
+                echo -e "${n1t}${Red}You must provide the container name.${Color_Off}";
+                usage;
+                exit 12;
+            fi
+            result=$(isInList ${container} "${containers[@]}"); 
+            if [[ ! $? -eq 0 ]] ; then
+                echo -e "${n1t}${Red}The container [${Cyan}${container}${Red}] must be from this list [${Cyan}${containers[@]}${Red}]${Color_Off}";
+                usage;
+                exit 12;
+            fi
+        ;;
+    esac
     
     echo -e "${n1t}${Yellow}Docker execution of [${Cyan}${action}${Yellow}].${Color_Off}";
     
     case ${action} in
+        connect) 
+            if [ ${#isRootUser} == 0 ]; then
+                echo -e "${n1t}${Red}You need to tell us if you want to connect as root user or not.${Color_Off}";
+                usage; exit 12;
+            else 
+                case ${isRootUser} in 
+                    "true"|"false") 
+                        docker.manager ${action} ${container} ${prefix} ${isRootUser};
+                        ;;
+                    *)
+                        echo -e "${n1t}${Red}Possible values for isRootUser are [${Cyan}true${Red}|${Cyan}false${Red}].${Color_Off}";
+                        usage; exit 12;
+                        ;; 
+                esac
+            fi
+            ;;
         build)  
             if [[ ${#prefix} -eq 0 ]]; then
                 echo -e "${n1t}${Red}You must provide the prefix use to build the container.${Color_Off}";
                 usage;
                 exit 12;
             fi
-            if [[ ${#container} -eq 0 ]]; then
-                echo -e "${n1t}${Red}You must provide the container to work with.${Color_Off}";
+            result=$(isInList ${prefix} "${prefixes[@]}"); 
+            if [[ ! $? -eq 0 ]] ; then
+                echo -e "${n1t}${Red}The prefix [${Cyan}${prefix}${Red}] must be from this list [${Cyan}${prefixes[@]}${Red}]${Color_Off}";
                 usage;
                 exit 12;
             fi
-            build ${prefix} ${container}; ;;
-        start)  docker-compose -f docker-compose.yml up -d; ;;
-        stop)   docker-compose -f docker-compose.yml down; ;;
+            docker.manager ${action} ${container} ${prefix} ${isRootUser}; 
+            ;;
+        start|stop|clean)  docker.manager ${action}; ;;
+        copy) 
+            if [[ ${#from} -eq 0 ]]; then
+                echo -e "${n1t}${Red}You must provide from the ${container} where we copy the file.${Color_Off}";
+                usage;
+                exit 12;
+            fi
+            if [[ ${#to} -eq 0 ]]; then
+                echo -e "${n1t}${Red}You must provide where in the host we copy the file.${Color_Off}";
+                usage;
+                exit 12;
+            fi
+            docker.manager ${action} ${from} ${to}; ;;
     esac
-    echo -e "${n1t}${Yellow}Docker execution ${Green}done.${Color_Off}";
+    echo -e "${tab}${Yellow}Docker execution ${Green}done.${Color_Off}";
 }
 
 function generate() {
@@ -268,8 +320,26 @@ case ${command} in
 		action=$2; class=$3;
 		mavenManagement ${action} ${class}; ;;
 	docker)
-	   action=$2; prefix=$3; container=$4;
-	   dockerManagement ${action} ${prefix} ${container}; ;;
+	    action=$2; container=$3; prefix=$4; isRootUser=$4;
+        dockerManagement ${action} ${container} ${prefix} ${isRootUser}; ;;
+    test)
+        # declare containers="$(docker images)";
+        while IFS= read -r line; do
+            if [[ $line =~  "<none>" ]]; then
+                # echo "line= $line"
+                image_id=$(echo $line | awk -F' ' '{print $3}');
+                echo "image= ${image_id}"
+                docker rmi ${image_id}
+            fi
+        done < <(docker images);
+
+            # IFS=' ' read  -r -a container <<< "${containers[$i]}";
+        #     IFS=' ' read  -r -a container <<< "${image[${count}]}";
+        #         images=$(docker images | awk -F' ' '{print $3}')  
+        # echo -e "$(docker images | awk -F' ' '{print $1, $3}' | grep none)";
+        #     IFS=' ' read -r -a value <<< ${values[@]};
+        #     echo -e "${value[1]}";
+        ;;
 #    build)
 #        mvn clean install -DskipTests; 
 #        ;;
