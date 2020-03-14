@@ -1,18 +1,21 @@
 #!/bin/bash
 
 current_dir=$(pwd);
-links_dir="/data/links";
+
 jdk_dir="/data/app/programs/java";
-jdk_needed="/data/app/programs/java/jdk-13.0.1";
-jdk_path_file="${links_dir}/jdk.original.link";
+maven_current_settings=${HOME}/.m2/settings.xml
+maven_my_current_settings=${HOME}/.m2/my.settings.xml
+maven_original_settings=${HOME}/.m2/original.settings.xml
+
 resources_dir="scripts/resources";
 libs_dir="scripts/libs";
 
 commands=("mvn" "docker" "test"); # "run" "srv"  "project" "fast" "update" "generate" "get"
-mvn_actions=("c" "ci" "e" "p" "rp" "r" "t" "v" "va");
+mvn_actions=("compile" "enforcer" "package" "run" "test" "update-report" "update-version" "validate");
 docker_actions=("build" "start" "stop" "connect" "clean");
 containers=("postgres")
 prefixes=("ghandalf");
+
 command=$1;
 module=$2;
 
@@ -42,35 +45,50 @@ function inputValidation() {
 	fi
 }
 
+###
+# mvn will use the machine JAVA_HOME, I need to force mvn to use the one define in the pom.xml by java.current.version
+##
+function getProjectJavaCurrentVersion() {
+
+	local java_current_version=$(mvn help:evaluate -Dexpression=java.current.version -q -DforceStdout);
+	if [[ "${java_current_version}" =~ "11" ]] || [[ "${java_current_version}" =~ "13" ]] || [[ "${java_current_version}" =~ "14" ]]; then
+		java_current_version="jdk-${java_current_version}";
+	else
+		java_current_version="jdk${java_current_version}";
+	fi
+	echo ${java_current_version};
+}
+
 function setUp() {
 	loadResources;
 	loadLibraries;
 
-    if [ -h ${links_dir}/jdk ]; then
-	    echo -e "${n1t}${Green}Set up jdk to [${Cyan}${jdk_needed}${Green}]${Color_Off}";
-        cd ${links_dir};
-        echo "jdk_path=$(realpath jdk)" > ${jdk_path_file}; 
-        rm -f jdk;
-        ln -s ${jdk_needed} jdk;
-        cd ${current_dir};
-        echo -e "${tab}${Green}Set up jdk to [${Cyan}${jdk_needed}${Green}] ${Yellow}done${Color_Off}${nl}";
-    fi
+    echo -e "${n1t}${Green}Set up JAVA_HOME and maven settings from [${Yellow}${maven_current_settings}${Green}] to [${Yellow}${maven_my_current_settings}${Green}].${Color_Off}";
+
+    export JAVA_HOME="${jdk_dir}/$(getProjectJavaCurrentVersion)";
+    echo -e "${tabs2}${Yellow}JAVA_HOME=${Cyan}${JAVA_HOME}${Yellow}${Color_Off}";
+    echo -e "${tabs2}${Yellow}MAVEN_VERSION=";
+    while read -r line; do
+        echo -e "${tabs3}${Cyan}${line}";
+    done < <(mvn --version);
+    echo -ne "${Color_Off}";
     
+    if [ -f ${maven_current_settings} ]; then
+        mv ${maven_current_settings} ${maven_original_settings};
+        mv ${maven_my_current_settings} ${maven_current_settings};
+    fi
+    echo -e "${tab}${Green}Set up of JAVA_HOME and maven settings from [${Yellow}${maven_current_settings}${Green}] to [${Yellow}${maven_my_current_settings}${Green}] ${Yellow}done${Color_Off}${nl}";
 }
 
 function tearDown() {
-	# JDK config
-    if [ -f ${jdk_path_file} ]; then
-        source ${jdk_path_file};
-		echo -e "${n1t}${Green}Rolling back jdk to [${Cyan}${jdk_path}${Green}]${Color_Off}";
-        cd ${links_dir};
-        rm -f jdk;
-        ln -s ${jdk_path} jdk;
-        rm -f ${jdk_path_file};
-        cd ${current_dir};
-        echo -e "${tab}${Green}Rolling back jdk to [${Cyan}${jdk_path}${Green}] ${Yellow}done${Color_Off}${nl}";
+	echo -e "${n1t}${Green}Rolling back maven settings from [${Yellow}${maven_current_settings}${Green}] to [${Yellow}${maven_my_current_settings}${Green}]${Color_Off}";
+
+    if [ -f ${maven_current_settings} ]; then
+        mv ${maven_current_settings} ${maven_my_current_settings};
+        mv ${maven_original_settings} ${maven_current_settings};
     fi
     
+    echo -e "${tab}${Green}Rolling back maven settings from [${Yellow}${maven_current_settings}${Green}] to [${Yellow}${maven_my_current_settings}${Green}] ${Yellow}done${Color_Off}${nl}";
 }
 
 function setUpDocker() { 
@@ -101,6 +119,8 @@ function mavenManagement() {
 	local action=$1;
 	local class=$2; # Could be classTest or ClassTest#functionToTest
 	local new_version=${class}; # Use the same parameter
+	local begin;
+	local parallel_compilation=""; #"-T 8C";
 	
 	if [[ ${#action} -eq 0 ]]; then
         echo -e "${n1t}${Red}You must provide the action from this list [${Cyan}${mvn_actions[@]}${Red}].${Color_Off}";
@@ -113,37 +133,82 @@ function mavenManagement() {
 		usage;
 		exit 12;
 	fi
-		
+	
+	setUp;
+	
 	echo -e "${n1t}${Yellow}Maven execution of [${Cyan}${action}${Yellow}].${Color_Off}";
 	
 	case ${action} in
-		c)		mvn clean compile; ;;
-		ci)		mvn clean install -DskipTests; ;;
-		e)		mvn enforcer:display-info; ;;
-		p)		mvn clean package -DskipTests; ;;
-		r)		setUpDocker;
-				cd ws-api
-				mvn spring-boot:run
-				cd ${current_dir};
-				tearDownDocker; ;;
-		rp)		mvn versions:dependency-updates-report;
-				mvn versions:plugin-updates-report;
-				mvn versions:property-updates-report; ;;
-		t)		if [[ ${#class} -gt 0 ]]; then
-					mvn test -Dtest=${class};
-				else 
-					mvn test;
-				fi ;;
-		v) 		# see: https://www.mojohaus.org/versions-maven-plugin/usage.html
-				if [[ ${#new_version} -gt 0 ]]; then
-					mvn versions:set -DnewVersion=${new_version};
-				else 
-					echo -e "${n1t}${Red}You need to provide the new version${Color_Off}";
-					usage; exit 12;
-				fi ;;
-		va) 	mvn clean validate; ;;
+		compile)
+            local succeed=false;
+            while ! ${succeed}; do           
+                echo -ne "${n1t}${Green}Do you want to execute the tests <y|n>?${Color_Off} ";
+                read answer;
+                case "${answer}" in
+                    "y"|"Y")
+                        echo -e "${tab}${Yellow}The command will be [${Cyan}mvn -f pom.xml ${parallel_compilation} clean install${Yellow}].${Color_Off}${nl}";
+                        begin=$(date +%s);
+                        mvn -f pom.xml -X ${parallel_compilation} enforcer:display-info clean install;
+                        succeed=true;
+                    ;;
+                    "n"|"N")
+                        echo -e "${tab}${Yellow}The command will be [${Cyan}mvn -f pom.xml ${parallel_compilation} clean install -DskipTests${Yellow}].${Color_Off}${nl}";
+                        begin=$(date +%s);
+                        mvn -f pom.xml ${parallel_compilation} enforcer:display-info clean install -DskipTests;
+                        succeed=true;
+                        ;;
+                    *)
+                    echo -e "${tabs2}${Red}Possible answers are [y|Y|n|N] !!!${Color_Off}";
+                esac
+            done
+            ;;
+		enforcer)
+            begin=$(date +%s);
+            mvn ${parallel_compilation} enforcer:display-info; 
+            ;;
+		package)
+            begin=$(date +%s);
+            mvn ${parallel_compilation} clean package -DskipTests; 
+            ;;
+		run)		
+		    begin=$(date +%s);
+            setUpDocker;
+			cd ws-api
+			mvn ${parallel_compilation} spring-boot:run
+			cd ${current_dir};
+			tearDownDocker; 
+			;;
+		test)		
+            begin=$(date +%s);
+            if [[ ${#class} -gt 0 ]]; then
+                mvn ${parallel_compilation} test -Dtest=${class};
+            else 
+                mvn ${parallel_compilation} test;
+            fi; 
+            ;;
+		update-report)
+            begin=$(date +%s);
+            mvn ${parallel_compilation} versions:dependency-updates-report;
+            mvn ${parallel_compilation} versions:plugin-updates-report;
+            mvn ${parallel_compilation} versions:property-updates-report;
+            ;;
+		update-version)
+            # see: https://www.mojohaus.org/versions-maven-plugin/usage.html
+            if [[ ${#new_version} -gt 0 ]]; then
+                begin=$(date +%s);
+                mvn ${parallel_compilation} versions:set -DnewVersion=${new_version};
+            else 
+                echo -e "${n1t}${Red}You need to provide the new version${Color_Off}";
+                usage; exit 12;
+            fi ;;
+		validate) 	
+            begin=$(date +%s);
+            mvn clean validate; 
+            ;;
 	esac
-	echo -e "${n1t}${Yellow}Maven execution ${Green}done.${Color_Off}";
+	echo -e "${tabs2}${Yellow}The command tooks [${Cyan}$(($(date +%s)-${begin}))${Yellow}] seconds.${Color_Off}${nl}";
+	echo -e "${tab}${Yellow}Maven execution ${Green}done.${Color_Off}";
+	tearDown;
 }
 
 function dockerManagement() {
@@ -167,6 +232,10 @@ function dockerManagement() {
         exit 12;
     fi
 
+    setUp;
+    
+    echo -e "${tab}${Yellow}Docker execution.${Color_Off}";
+    
     # validation
     case ${action} in
         connect|build) 
@@ -232,6 +301,8 @@ function dockerManagement() {
             docker.manager ${action} ${from} ${to}; ;;
     esac
     echo -e "${tab}${Yellow}Docker execution ${Green}done.${Color_Off}";
+    
+    tearDown;
 }
 
 function generate() {
@@ -307,14 +378,13 @@ function usage() {
     echo -e "${tabs2}${Yellow}whith the command <${Cyan}mvn${Yellow}> uses those parameters [${Cyan}${mvn_actions[@]}${Yellow}]${Color_Off}";
     echo -e "${tabs2}${Yellow}whith the command <${Cyan}docker${Yellow}> uses those parameters [${Cyan}${docker_actions[@]}${Yellow}]${Color_Off}";
     echo -e "${nl}";
-    tearDown;
+    exit 12;
 }
 
 loadResources;
 loadLibraries;
 loadDockerEnv;
 inputValidation ${command};
-setUp;
 case ${command} in
 	mvn)
 		action=$2; class=$3;
@@ -354,4 +424,3 @@ case ${command} in
 #    ;;
     *) usage; ;;
 esac 
-tearDown;
