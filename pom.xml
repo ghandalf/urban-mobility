@@ -15,31 +15,29 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.2.RELEASE</version>
+		<version>2.2.5.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
-		<!-- For now to make sure that I have the latest milestone version look 
-			under https://repo.spring.io/milestone https://repo.spring.io/milestone/org/springframework/boot/spring-boot-starter-parent/ 
-			https://repo.spring.io/milestone/org/springframework/spring-context/ mvn 
-			versions:display-dependency-updates Will give you some other updates, we 
-			need to make sure that the project compile in terminal and Eclipse -->
-		<!-- <spring.boot.version>2.1.0.RELEASE</spring.boot.version> -->
-		<!-- <spring.version>5.1.1.RELEASE</spring.version> -->
-		<!-- <spring.sleuth.version>2.0.2.RELEASE</spring.sleuth.version> -->
 
+		<!-- Use to force the java.home to mvn command line -->
+		<from.version>13</from.version>
+		<maven.compiler.source>${from.version}</maven.compiler.source>
+		<maven.compiler.target>${from.version}</maven.compiler.target>
+		<java.current.version>${from.version}.0.2+8-openj9</java.current.version>
+		<java.current.vendor>adoptopenjdk</java.current.vendor>
+
+		<java.version>${java.current.version}</java.version>
+
+		<maven.compiler.source>${from.version}</maven.compiler.source>
+		<maven.compiler.target>${from.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<maven.minimal.version>3.6.3</maven.minimal.version>
+
 		<grpc.version>1.26.0</grpc.version>
-		<!-- Due to Eclipse and M2E limitation when using maven -> Update Project. 
-			I have to use jdk 10 from Window -> Preferences -> Install JREs/Execution 
-			Environment -->
-		<java.version>jdk-13.0.1</java.version>
-		<maven.compiler.source>13</maven.compiler.source>
-		<maven.compiler.target>13</maven.compiler.target>
-		<maven.minimal.version>3.6.0</maven.minimal.version>
 
 		<mvn.ant.version>1.8</mvn.ant.version>
 		<mvn.assembly.version>3.2.0</mvn.assembly.version>
@@ -269,10 +267,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${mvn.compiler.version}</version>
-					<configuration>
-						<source>${maven.compiler.source}</source>
-						<target>${maven.compiler.target}</target>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -283,33 +277,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>${mvn.enforcer.version}</version>
-					<executions>
-						<execution>
-							<id>enforce-maven</id>
-							<goals>
-								<goal>enforce</goal>
-							</goals>
-							<configuration>
-								<rules>
-									<bannedPlugins>
-										<level>WARN</level>
-										<excludes>
-											<exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
-										</excludes>
-										<message>Please consider using the maven-invoker-plugin
-											(http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
-									</bannedPlugins>
-									<requireMavenVersion>
-										<!-- Due to embedded maven in eclipse is 3.5.3 version -->
-										<version>[${maven.minimal.version},)</version>
-									</requireMavenVersion>
-									<requireJavaVersion>
-										<version>${maven.compiler.source}</version>
-									</requireJavaVersion>
-								</rules>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -330,18 +297,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jdeps-plugin</artifactId>
 					<version>${mvn.jdeps.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<!-- verify main classes -->
-								<goal>jdkinternals</goal>
-								<!-- verify test classes -->
-								<goal>test-jdkinternals</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -362,21 +317,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-toolchains-plugin</artifactId>
 					<version>${mvn.toolchains.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>toolchain</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<toolchains>
-							<jdk>
-								<version>jdk-11.0.1</version>
-								<vendor>oracle</vendor>
-							</jdk>
-						</toolchains>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.flywaydb</groupId>
@@ -392,39 +332,11 @@
 					<groupId>org.xolstice.maven.plugins</groupId>
 					<artifactId>protobuf-maven-plugin</artifactId>
 					<version>${mvn.protobuf.version}</version>
-					<configuration>
-						<protocArtifact>
-							com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
-						</protocArtifact>
-						<pluginId>grpc-java</pluginId>
-						<pluginArtifact>
-							io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
-						</pluginArtifact>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>compile</goal>
-								<goal>compile-custom</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>${mvn.codehaus.version}</version>
-					<configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>dependency-updates-report</report>
-									<report>plugin-updates-report</report>
-									<report>property-updates-report</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
@@ -432,22 +344,128 @@
 					<version>${mvn.git.commit.version}</version>
 				</plugin>
 			</plugins>
-
 		</pluginManagement>
+
+
+
+
+
 
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<toolchains>
+						<jdk>
+							<version>${java.current.version}</version>
+							<vendor>${java.current.vendor}</vendor>
+						</jdk>
+					</toolchains>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
+				<configuration>
+					<reportSets>
+						<reportSet>
+							<reports>
+								<report>dependency-updates-report</report>
+								<report>plugin-updates-report</report>
+								<report>property-updates-report</report>
+							</reports>
+						</reportSet>
+					</reportSets>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedPlugins>
+									<level>WARN</level>
+									<excludes>
+										<exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
+									</excludes>
+									<message>Please consider using the maven-invoker-plugin
+										(http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
+								</bannedPlugins>
+								<requireMavenVersion>
+									<version>[${maven.minimal.version},)</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>${maven.compiler.source}</version>
+								</requireJavaVersion>
+								<requireOS>
+									<family>unix</family>
+								</requireOS>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.xolstice.maven.plugins</groupId>
+				<artifactId>protobuf-maven-plugin</artifactId>
+				<configuration>
+					<protocArtifact>
+						com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
+					</protocArtifact>
+					<pluginId>grpc-java</pluginId>
+					<pluginArtifact>
+						io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+					</pluginArtifact>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>compile-custom</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jdeps-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jdkinternals</goal>
+							<goal>test-jdkinternals</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+				    <multiRelease>${from.version}</multiRelease>
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 	</build>
 </project>
