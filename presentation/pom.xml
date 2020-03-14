@@ -24,14 +24,16 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
 				<executions>
 					<execution>
 						<phase>compile</phase>
 						<configuration>
 							<target>
-								<exec dir="${project.basedir}"
-									executable="npm"
+							<exec dir="${project.basedir}" executable="npm"
+                                    failonerror="true">
+                                    <arg line="install" />
+                                </exec>
+								<exec dir="${project.basedir}" executable="npm"
 									failonerror="true">
 									<arg line="run build" />
 								</exec>
