@@ -8,8 +8,8 @@ services:
      hostname: postgres.ghandalf.ca
      ports: ['5432:5432']
      #restart: always
-     environment:
-        POSTGRES_PASSWORD: gh@nd@lf!
+    #  environment:
+    #     POSTGRES_PASSWORD: gh@nd@lf!
      volumes:
       - postgres-data:/var/lib/postgresql/data:rw
      networks: ['ghandalf.ca']
