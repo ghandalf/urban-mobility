@@ -13,11 +13,15 @@ ENV PG_MINOR 1
 ENV PG_VERSION ${PG_MAJOR}.${PG_MINOR}
 
 # Container configuration
-RUN apk add --no-cache --virtual .fecth-deps ca-certificates openssl tar --update bash
-RUN apk add --no-cache --virtual .build-deps gcc g++ make \ 
-    libc-dev libedit-dev libxml2-dev libxslt-dev linux-headers llvm8-dev clang
-    # perl bison flex
+RUN apk add --no-cache --virtual .fecth-deps ca-certificates openssl tar
+RUN apk add --no-cache --virtual .build-deps \
+    bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit libedit-dev \
+    libxml2-dev libxslt-dev linux-headers llvm8-dev clang g++ make \
+    openssl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev icu-dev busybox-suid;
+
+    # perl  
     # readline readline-dev
+# RUN apk --update bash
 
 RUN mkdir -p ${APP_HOME}/install
 RUN cd ${APP_HOME}/install \
@@ -29,11 +33,24 @@ RUN cd ${APP_HOME}/install; \
     result=${result//' '/}; \
     if [[ "${result}" == "OK" ]]; then tar xf postgresql-12.1.tar.gz; else exit 1; fi; 
 
+RUN apk add --no-cache --virtual .build-Test-deps llvm llvm-config
 RUN cd ${APP_HOME}/install/postgresql-12.1; \
-    ./configure --prefix=${APP_HOME}; \
-    make; make install;
-
-RUN apk add --no-cache --virtual .build-deps busybox-suid
+    ./configure \ 
+        --prefix=${APP_HOME} \
+        --enable-integer-datetimes \
+		--enable-thread-safety \
+		--enable-tap-tests \
+        --disable-rpath \
+		--with-uuid=e2fs \
+		--with-gnu-ld \
+        --with-system-tzdata=/usr/share/zoneinfo \
+        --with-openssl \
+		--with-libxml \
+		--with-libxslt \
+		--with-icu \
+		--with-llvm; \
+    make; \
+    make install;
 
 # Create group and system user
 RUN addgroup -S postgres; \
@@ -49,9 +66,17 @@ RUN chmod 0755 ${APP_HOME}/service.sh; \
     chown -R postgres:postgres ${APP_HOME}/service.sh;
 
 RUN mkdir -p /var/log/postgresql; \
-    chown -R postgres:postgres /var/log/postgresql;
-RUN mkdir -p /var/run/postgresql; \
+    chown -R postgres:postgres /var/log/postgresql; \
+    mkdir -p /var/run/postgresql; \
     chown -R postgres:postgres /var/run/postgresql;
+
+RUN ls -la /var/log/
+# Clean up
+# RUN apk add --no-cache --virtual .postgresql-rundeps \
+		# $runDeps \
+		# bash su-exec tzdata   \
+
+# RUN apk del .fetch-deps .build-deps 
 
 USER postgres
 RUN ${APP_HOME}/bin/initdb -D ${APP_HOME}/data
@@ -73,15 +98,21 @@ RUN cat ${APP_HOME}/data/postgresql.conf | grep 'listen_addresses'; \
 
 # Start postgresql
 # RUN /usr/share/postgres/bin/pg_ctl -D /usr/share/postgres/data -l logfile start;
-RUN /usr/share/postgres/bin/pg_ctl -D /usr/share/postgres/data  start;
+RUN ${APP_HOME}/bin/pg_ctl -D ${APP_HOME}/data  start; 
+# \
+#     ps -ef | grep "post"; \
+#     ls -ls /tmp/.s.PGSQL.5432; \
+#     ${APP_HOME}/bin/createdb UrbanMobility;
+RUN ls -la ${APP_HOME}/bin
 
 # WORK
-# RUN ls -la /var/run/
-# RUN /usr/local/pgsql/bin/createdb UrbanMobility;
-# RUN /usr/local/pgsql/bin/psql UrbanMobility; \
+# RUN ${APP_HOME}/createdb UrbanMobility;
+# RUN ls -la /var/log/postgresql
+
+# RUN ${APP_HOME}/bin/psql UrbanMobility; \
 #     create user urbanadmin with password 'Urb@n@dm!n'; \
 #     grant all privileges on database UrbanMobility to urbanadmin;
-# RUN /usr/local/pgsql/bin/psql test
+# RUN ${APP_HOME}/psql test
 
 #COPY ./config/jenkins/system/usr/share/jenkins/.bashrc ${APP_HOME}/
 # RUN psql -f 
@@ -91,7 +122,7 @@ RUN /usr/share/postgres/bin/pg_ctl -D /usr/share/postgres/data  start;
 EXPOSE ${PORT}
 
 # ENTRYPOINT ["/usr/share/postgres/service.sh", "start"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/usr/share/postgres/bin/pg_ctl" "-D" "/usr/share/postgres/data"  "start"]
 
 # performing post-bootstrap initialization ... sh: locale: not found
 # 2020-01-12 19:33:36.683 UTC [10] WARNING:  no usable system locales were found
