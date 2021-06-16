@@ -16,7 +16,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.5.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -37,7 +37,7 @@
 
 		<maven.minimal.version>3.6.3</maven.minimal.version>
 
-		<grpc.version>1.26.0</grpc.version>
+		<grpc.version>1.29.0</grpc.version>
 
 		<mvn.ant.version>1.8</mvn.ant.version>
 		<mvn.assembly.version>3.2.0</mvn.assembly.version>
