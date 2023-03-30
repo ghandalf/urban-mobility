@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.17.3
 
 LABEL Author="Francis Ouellet <Ouellet.Francis@gmail.com>"
 LABEL Description="Base on postgres offical image"
